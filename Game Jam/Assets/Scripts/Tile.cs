@@ -5,7 +5,10 @@ using UnityEngine;
 [SelectionBase]
 public class Tile : MonoBehaviour {
 
-	public enum Type : int { None, Sol, Mur, Piege, Mur1, Mur2 }
+	public enum Type : int { None, Sol, Mur, Piege }
+
+    //None when not occupied. Busy when Wall/Trap
+    public enum State : int { None, Busy, Player, Monster }
 
 	#region attributes
 	//public Queue<float> Intensitees;
@@ -28,9 +31,9 @@ public class Tile : MonoBehaviour {
 			if (value != _type) {
 				if (_meshObject)
 					DestroyImmediate (_meshObject);
-				
+
 				_type = value;
-				
+
 				switch (value) 
 				{
 				case Type.None:
@@ -45,13 +48,7 @@ public class Tile : MonoBehaviour {
 				case Type.Piege:
 					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Piege"), transform);
 					break;
-                case Type.Mur1:
-                    _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Mur_cubes"), transform);
-                    break;
-                case Type.Mur2:
-                    _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Mur_hexagones"), transform);
-                    break;
-                }
+				}
 
 				_meshObject.transform.localPosition = Vector3.zero;
 				_meshObject.transform.localRotation = Quaternion.identity;
@@ -60,39 +57,62 @@ public class Tile : MonoBehaviour {
 		}
 	}
 
-	// lumiere est en français car "light" est obsolete....... ><
-	public Light lumiere 
-	{
-		get { return _light ? _light : _light = GetComponentInChildren<Light> (); }
-	}
+    public State[] history;
 
-	public float shownIntensity
-	{
-		get { return _shownIntensity; }
-		set 
-		{
-			_shownIntensity = Mathf.Clamp01 (value);
-			if (_shownIntensity == 0f) 
-				lumiere.enabled = false;
-			else
-			{
-				lumiere.enabled = true;
-				lumiere.intensity = _shownIntensity;
-			}
-		}
-	}
+    public bool lit; //true if currently lit
+    private int ageShown; //what state should be displayed when tile is lit
+    
 
     #endregion
 
     #region Unity methods
     // Use this for initialization
     void Start () {
-		
-	}
+        this.history = new State[100]; //100 last states;
+        this.history[0] = State.None;
+        this.lit = false;
+        //this.GetComponentInChildren<MeshRenderer>().enabled = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
-	#endregion
+/*        if (lit)
+        {
+            this.GetComponentInChildren<MeshRenderer>().enabled = true;
+        } else
+        {
+            this.GetComponentInChildren<MeshRenderer>().enabled = false;
+        }
+ */   }
+
+    void UpdateTick(int timeStamp)
+    {
+        this.history[timeStamp % 100] = State.None; //Replace by actual
+    }
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        Firefly ffCol = other.gameObject.GetComponent<Firefly>();
+
+        if (ffCol != null)
+        {
+            int age = other.GetComponent<Firefly>().age;
+            this.lit = true;
+            this.ageShown = GameManager.time - age;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        Firefly ffCol = other.gameObject.GetComponent<Firefly>();
+
+        if (ffCol != null)
+        {
+            this.lit = false;
+        }
+    }
+
+
+    #endregion
 }

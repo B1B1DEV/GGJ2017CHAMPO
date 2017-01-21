@@ -6,12 +6,14 @@ public class Firefly : Entite
     public float intensity;
     public Vector3 velocity;
     private GameManager gm;
+    public int age;
 
     private void Start()
     {
         //this.GetComponent<Light>().intensity = intensity;
         gm = GameManager.Instance;
         gm.fireflies.Add(this);
+        age = 0;
     }
 
     public void WaveForward()
@@ -43,7 +45,7 @@ public class Firefly : Entite
         }
     }
 
-    void OnCollisionEnter(Collision col)
+    /*void OnCollisionEnter(Collision col)
     {
         // Detect Tile
         Tile tileCol = col.gameObject.GetComponent<Tile>();
@@ -51,7 +53,7 @@ public class Firefly : Entite
         Debug.Log("COLLISION, MOTHERFUCKER");
 
         // Give intensity info to tile
-        tileCol.shownIntensity = intensity;
+        //tileCol.shownIntensity = intensity;
 
         // Destroy if hit a wall
         if (tileCol != null && tileCol.type == Tile.Type.Mur)
@@ -59,6 +61,6 @@ public class Firefly : Entite
             Destroy(gameObject);
             gm.fireflies.Remove(this);
         }
-    }
+    }*/
 
 }

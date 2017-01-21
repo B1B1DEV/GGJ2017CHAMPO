@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Entite : MonoBehaviour {
 
 	public Coord PositionActuelle { get; set; }
 
-	private Queue<Coord> _positions;
-	private Queue<Coord> positions {
+	private SortedDictionary<int, Coord> _positions;
+	private SortedDictionary<int, Coord> positions {
 		get
 		{
 			if (_positions == null)
 			{
-				_positions = new Queue<Coord> (Constantes.MEMOIRE_ENTITEES);
-				_positions.Enqueue (PositionActuelle);
+				_positions = new SortedDictionary<int, Coord> ();
+				_positions.Add (GameManager.time, PositionActuelle);
 			}
 			return _positions;
 		}
@@ -24,29 +25,31 @@ public class Entite : MonoBehaviour {
 	public void UpdateEntite ()
 	{
 		Move ();
-		if ( !(positions.Count < Constantes.MEMOIRE_ENTITEES ) )
-			positions.Dequeue ();
+		while ( positions.Count >= Constantes.MEMOIRE_ENTITEES )
+			positions.Remove(positions.First().Key);
 		
-		positions.Enqueue (PositionActuelle);
+		positions.Add (GameManager.time, PositionActuelle);
 	}
 
 	
-	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Vector2, float> intensities )
+	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Coord, float> intensities )
 	{
-		foreach (Coord pos in positions) {
-			
+		
+		intensities = new Dictionary<Coord, float> ();
+		return false;	
+	}
+
+	
+
+	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
+	{
+		foreach (KeyValuePair<int, Coord> pair in positions) {
+			int distance = Mathf.RoundToInt((pair.Value.ToVector2 () - fromPos.ToVector2 ()).SqrMagnitude () / Constantes.INNER_RADIUS);
 		}
 
-		intensities = new Dictionary<Vector2, float> ();
-		return false;	
-	}
-
-	
-
-	public bool VisibilityFrom ( Coord fromPos, out Vector2 maxIntensitePos )
-	{
-		maxIntensitePos = Vector2.zero;
-		return false;	
+		maxIntensitePos = new Coord(0,0);
+		intensity = 0f;
+		return false;
 	}
 	
 
