@@ -10,13 +10,12 @@ public class Entite : MonoBehaviour {
 	private Queue<Coord> positions {
 		get
 		{
-			if (_positions != null)
-				return _positions;
-			else
+			if (_positions == null)
 			{
 				_positions = new Queue<Coord> (Constantes.MEMOIRE_ENTITEES);
 				_positions.Enqueue (PositionActuelle);
 			}
+			return _positions;
 		}
 	}
 
@@ -44,7 +43,7 @@ public class Entite : MonoBehaviour {
 
 	
 
-	public bool VisibilityFrom ( Vector2 fromPos, out Vector2 maxIntensitePos )
+	public bool VisibilityFrom ( Coord fromPos, out Vector2 maxIntensitePos )
 	{
 		maxIntensitePos = Vector2.zero;
 		return false;	
