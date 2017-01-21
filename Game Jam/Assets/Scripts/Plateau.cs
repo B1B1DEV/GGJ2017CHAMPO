@@ -150,9 +150,9 @@ public class Plateau : MonoBehaviour {
 		float ri = Mathf.Sqrt(3)/2 * ru ;
 
 
-		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
 		{
-			for (int j = Constantes.LARGEUR_PLATEAU; j > 0 ; j--) 
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
 			{
 				// Création des cases
 				
