@@ -13,7 +13,7 @@ public class TileEditor : Editor {
 
 		tile.type = (Tile.Type)EditorGUILayout.EnumPopup ("Type", tile.type);
 
-		tile.shownIntensity = EditorGUILayout.Slider ("Shown Intensity", tile.shownIntensity, 0, 1);
+		//tile.shownIntensity = EditorGUILayout.Slider ("Shown Intensity", tile.shownIntensity, 0, 1);
 	}
 
 
