@@ -10,7 +10,7 @@ public class Firefly : Entite
 
     private void Start()
     {
-        //this.GetComponent<Light>().intensity = intensity;
+        this.GetComponent<Light>().intensity = intensity;
         gm = GameManager.Instance;
         gm.fireflies.Add(this);
         age = 0;
@@ -18,7 +18,7 @@ public class Firefly : Entite
 
     public void WaveForward()
     {
-        InvokeRepeating("Move", 0f, Constantes.DELTA_T_LIGHT);
+        InvokeRepeating("UpdateEntite", 0f, Constantes.DELTA_T_LIGHT);
     }
 
     public override void Move()
@@ -36,6 +36,7 @@ public class Firefly : Entite
     {
         // decrease intensity until light disappear
         intensity -= 0.1f;
+        this.GetComponent<Light>().intensity = intensity;
 
         // Destroy if zero
         if (intensity <= 0f)
@@ -44,23 +45,5 @@ public class Firefly : Entite
             gm.fireflies.Remove(this);
         }
     }
-
-    /*void OnCollisionEnter(Collision col)
-    {
-        // Detect Tile
-        Tile tileCol = col.gameObject.GetComponent<Tile>();
-
-        Debug.Log("COLLISION, MOTHERFUCKER");
-
-        // Give intensity info to tile
-        //tileCol.shownIntensity = intensity;
-
-        // Destroy if hit a wall
-        if (tileCol != null && tileCol.type == Tile.Type.Mur)
-        {
-            Destroy(gameObject);
-            gm.fireflies.Remove(this);
-        }
-    }*/
 
 }
