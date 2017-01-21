@@ -20,6 +20,9 @@ public class Plateau : MonoBehaviour {
 	public bool deserialisation = false;
 
 	public int decal = 0; 
+	
+	public int hole = 20;
+	public int colonneUnique = 10;
 
 
 
@@ -45,21 +48,6 @@ public class Plateau : MonoBehaviour {
 		}
 	}
 
-
-
-
-
-	void miseAJour()
-	{
-		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
-		{
-			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
-			{
-				string name = j.ToString () + "-" + i.ToString ();
-				//GameObject.Find(name).
-			}
-		}
-	}
 
 
 
@@ -149,7 +137,9 @@ public class Plateau : MonoBehaviour {
 		float ru = .5f;
 		float ri = Mathf.Sqrt(3)/2 * ru ;
 
-
+		/// MUR DE FOND ==================================================================================
+		
+		
 		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
 		{
 			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
@@ -167,21 +157,120 @@ public class Plateau : MonoBehaviour {
 
 				Tile tile = tileGO.GetComponent<Tile> ();
 
-				if(tilesInt[j, i] == Constantes.TILE_SOL)
-					tile.type = Tile.Type.Sol;
-				else if(tilesInt[j, i] == Constantes.TILE_NONE)
-					tile.type = Tile.Type.None;
-				else if(tilesInt[j, i] == Constantes.TILE_MUR)
-					tile.type = Tile.Type.Mur;
-				else if(tilesInt[j, i] == Constantes.TILE_PIEGE)
-					tile.type = Tile.Type.Piege;
+				tile.type = Tile.Type.Mur;
+
+				GameManager.Instance.tiles [j, i] = tile;
 			}
 		}
+		
+		/// ON PERCE ==========================================================================================
+		
+		int taille = Constantes.HAUTEUR_PLATEAU * Constantes.LARGEUR_PLATEAU;
+		int hole = (taille*60)/100;
+		
+		for(int i=0; i< hole; i++)
+		{
+			int x=Random.Range(0, Constantes.LARGEUR_PLATEAU);
+			int y=Random.Range(0, Constantes.HAUTEUR_PLATEAU);
+			string name = x.ToString () + "-" + y.ToString ();
+			GameObject tileGO = GameObject.Find(name);
+			Tile tiler = tileGO.GetComponent<Tile> ();
+			tiler.type = Tile.Type.Sol;
+		}
+		
+		
+		/*
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
+		{
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
+			{
+
+				string name = j.ToString () + "-" + i.ToString ();
+				GameObject tileGO = GameObject.Find(name);
+				int rand = Random.Range(0, 100);
+				Tile tile = tileGO.GetComponent<Tile> ();
+				
+				if(rand <= hole )
+					tile.type = Tile.Type.Sol;
+
+			}
+		}
+		*/
+		colonnes();
+		salleCentral();
+	}
+		/// On suprime les colones isolé ========================================================================
+		
+	void colonnes()
+	{
+		for (int i = 1; i < Constantes.HAUTEUR_PLATEAU-1 ; i++) 
+		{
+			for (int j = 1; j < Constantes.LARGEUR_PLATEAU-1; j++) 
+			{
+
+				string name = j.ToString () + "-" + i.ToString ();
+				string name2 = (j-1).ToString () + "-" + (i-1).ToString ();
+				string name3 = (j+1).ToString () + "-" + (i).ToString ();
+				string name4 = j.ToString () + "-" + (i+1).ToString ();
+				string name5 = (j+1).ToString () + "-" + (i+1).ToString ();
+				
+				GameObject tileGO = GameObject.Find(name);
+				GameObject tileGO2 = GameObject.Find(name2);
+				GameObject tileGO3 = GameObject.Find(name3);
+				GameObject tileGO4 = GameObject.Find(name4);
+				GameObject tileGO5 = GameObject.Find(name5);
+				
+				int rand = Random.Range(0, 100);
+				int var = 0;
+				
+				Tile tile = tileGO.GetComponent<Tile> ();
+				Tile tile2 = tileGO2.GetComponent<Tile> ();
+				Tile tile3 = tileGO3.GetComponent<Tile> ();
+				Tile tile4 = tileGO4.GetComponent<Tile> ();
+				Tile tile5 = tileGO5.GetComponent<Tile> ();
+				
+				if(tile2.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile3.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile4.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile5.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				
+				if(rand <= colonneUnique )
+					tile.type = Tile.Type.Sol;
+
+			}
+		}
+		
+	}
+	
+	
+	public void salleCentral()
+	{ 
+		// CREATION DE LA SALLE
+		int xMilieux = Constantes.HAUTEUR_PLATEAU/2;
+		int yMilieux = Constantes.LARGEUR_PLATEAU/2;
+		
+		string name = "";
+
+		
+		for(int posX = xMilieux-Constantes.RADIUS_SPAWN; posX<xMilieux+Constantes.RADIUS_SPAWN;posX++)
+			for(int posY = yMilieux-Constantes.RADIUS_SPAWN; posY<xMilieux+Constantes.RADIUS_SPAWN; posY++)
+			{
+				name = posY.ToString () + "-" + posX.ToString ();
+				GameObject tileGO = GameObject.Find(name);
+				Tile tiler = tileGO.GetComponent<Tile> ();
+				tiler.type = Tile.Type.Sol;
+			}
+		
+		
 	}
 
-
-
-
+	
+	
+	
 
 	public void chargementMap(int[,] map)
 	{
@@ -192,12 +281,23 @@ public class Plateau : MonoBehaviour {
 			{
 				string name = j.ToString () + "-" + i.ToString ();
 				DestroyObject(GameObject.Find(name));
+				
 			}
 		}
 
 		// Reconstruction
+		
+		
 
 		tilesInt = map;
+		
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
+		{
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
+			{
+				print(tilesInt[i,j]);
+			}
+		}
 
 		construction ();
 

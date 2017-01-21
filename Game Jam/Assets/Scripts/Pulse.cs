@@ -35,8 +35,8 @@ public class Pulse : MonoBehaviour
             ff.velocity = new Vector3(vx, 0, vz);
 
             // Let fly (or not yet)
-            //ff.Move();
-
+            ff.WaveForward();
+ 
             // select next angle
             angle_degree += 60;
         }
