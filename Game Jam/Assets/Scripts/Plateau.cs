@@ -1,32 +1,128 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 
 public class Plateau : MonoBehaviour {
 
 	public GameObject tilePrefab;
 
+	// Creation de la matrice 2D
+
 	public int[,] tiles = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
+
+	public bool serialisation = false;
+	public bool deserialisation = false;
+
+	public int decal = 0; 
+
+
 
 	void Start ()
 	{
 
 		//m_tile.GetComponent<MeshRenderer> ().;
+		construction();
+	}
 
-		// Creation de la matrice 2D
 
 
 
-		// print (matrice.GetLength(0)); RECUP LARGEUR
-		// print (matrice.GetUpperBound(0)); RECUP HAUTEUR
+	void Update (){
+		if (serialisation) {
+			serialisation = false;
+			int[,] tab2 = tiles;
+			serialiser(Constantes.FILENAME, tab2);
+		}
+		else if (deserialisation) {
+			deserialisation = false;
+			deserialiser(Constantes.FILENAME, 10);
+		}
+	}
 
-		for (int i = 0; i < tiles.GetUpperBound(0); i++) {
-			for (int j = 0; j < tiles.GetLength(0); j++)
-			{
-				print(tiles[i, j]);
+
+
+
+	// Sérialisation
+	public void serialiser(string fichier, int[,] tab2)
+	{
+		FileStream fs = new FileStream (fichier, FileMode.Create);
+		BinaryFormatter bf = new BinaryFormatter ();
+
+		// Transformation de la map
+		decal = 0;
+
+		string layer = "" + Constantes.HAUTEUR_PLATEAU;
+
+		//Regle probleme de taille
+		if (Constantes.HAUTEUR_PLATEAU < 10)
+			layer += " ";
+		if (Constantes.HAUTEUR_PLATEAU > 99)
+			decal++;
+		
+		layer += Constantes.LARGEUR_PLATEAU;
+
+		if (Constantes.LARGEUR_PLATEAU < 10)
+			layer += " ";
+		if (Constantes.LARGEUR_PLATEAU > 99)
+			decal++;
+
+
+
+		// Conversion
+
+		for(int j=0; j < Constantes.HAUTEUR_PLATEAU; j++)
+		for (int i = 0; i < Constantes.LARGEUR_PLATEAU; i++) {
+			layer += tab2[i, j].ToString();
+		
+		}
+
+		bf.Serialize (fs, layer);
+		fs.Close ();
+		print ("Serialisation terminée");
+	}
+
+	// Désérialisation
+
+	public void deserialiser(string fichier, int tab)
+	{
+		FileStream fs = new FileStream (fichier, FileMode.Open);
+		BinaryFormatter bf = new BinaryFormatter ();
+		object test = bf.Deserialize(fs);
+		string st = test.ToString();
+		print (st);
+
+		// Transformation string en matrice
+
+		Constantes.HAUTEUR_PLATEAU = int.Parse(st.Substring(0, 2));
+		Constantes.LARGEUR_PLATEAU = int.Parse(st.Substring (2, 2));
+		 
+		int[,] matrice = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
+
+
+		// Remplissage
+		int cpt = 4;
+
+		for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) {
+			for (int i = 0; i < Constantes.HAUTEUR_PLATEAU; i++) {
+				matrice[j, i] = int.Parse(st.Substring(cpt+decal, 1));
 			}
 		}
+
+		fs.Close ();
+		print ("Serialisation terminée");
+
+		chargementMap (matrice);
+	}
+
+
+
+	public void construction(){
 
 		// Creation du plateau
 
@@ -53,8 +149,31 @@ public class Plateau : MonoBehaviour {
 			}
 			b -= 1.1f;
 		}
-		// this.transform.position = new Vector3(9,2,5);
-		// Quaternion rotation = Quaternion.Euler(new Vector3(90, 301, 0));
-		// this.transform.rotation = rotation;
+	
 	}
+
+
+
+
+
+	public void chargementMap(int[,] map)
+	{
+		// Destruction des tiles
+		GameObject go = new GameObject();
+		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
+		{
+			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
+			{
+				string name = j.ToString () + "-" + i.ToString ();
+				DestroyObject(GameObject.Find(name));
+			}
+		}
+
+		// Reconstruction
+
+		construction ();
+
+
+	}
+
 }
