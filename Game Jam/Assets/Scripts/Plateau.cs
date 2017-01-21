@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Plateau : MonoBehaviour {
 
 	public GameObject m_tile;
