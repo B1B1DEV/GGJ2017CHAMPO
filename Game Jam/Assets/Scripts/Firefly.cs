@@ -14,11 +14,16 @@ public class Firefly : Entite
         gm.fireflies.Add(this);
     }
 
-    public void Move()
+    public void WaveForward()
+    {
+        InvokeRepeating("Move", 0f, Constantes.DELTA_T_LIGHT);
+    }
+
+    public override void Move()
     {
         //Move to the next tile
         Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, 0, transform.position.z + velocity.z);
-        float timeAnim = 3f;
+        float timeAnim = 12f;
         this.transform.DOMove(posNextTile, timeAnim);
         
         //Wane
@@ -42,6 +47,8 @@ public class Firefly : Entite
     {
         // Detect Tile
         Tile tileCol = col.gameObject.GetComponent<Tile>();
+
+        Debug.Log("COLLISION, MOTHERFUCKER");
 
         // Give intensity info to tile
         tileCol.shownIntensity = intensity;
