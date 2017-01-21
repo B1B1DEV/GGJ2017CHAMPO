@@ -10,7 +10,7 @@ public class TileEditor : Editor {
 
 		EditorGUI.indentLevel = 0;
 
-
+		tile.type = (Tile.Type)EditorGUILayout.EnumPopup ("Type", tile.type);
 	}
 
 
