@@ -14,4 +14,6 @@ public static class Constantes {
 	public static int TILE_NONE = 1;
 	public static int TILE_MUR = 2;
 	public static int TILE_PIEGE = 3;
+
+    public static float DELTA_T_LIGHT = 3f;
 }

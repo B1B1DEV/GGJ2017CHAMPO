@@ -17,9 +17,12 @@ public class Firefly : Entite
     public void Move()
     {
         //Move to the next tile
-        Vector3 posNextTile = new Vector3(transform.position.x + Mathf.Sqrt(3)/2*velocity.x, 0, transform.position.z + Mathf.Sqrt(3)/2*velocity.z);
-        //this.transform.DOMove(posNextTile, timeAnim);
-        this.transform.position = posNextTile;
+        Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, 0, transform.position.z + velocity.z);
+        float timeAnim = 3f;
+        this.transform.DOMove(posNextTile, timeAnim);
+        
+        //Wane
+        Wane();
     }
 
     public void Wane()
@@ -37,7 +40,13 @@ public class Firefly : Entite
 
     void OnCollisionEnter(Collision col)
     {
+        // Detect Tile
         Tile tileCol = col.gameObject.GetComponent<Tile>();
+
+        // Give intensity info to tile
+        tileCol.shownIntensity = intensity;
+
+        // Destroy if hit a wall
         if (tileCol != null && tileCol.type == Tile.Type.Mur)
         {
             Destroy(gameObject);
