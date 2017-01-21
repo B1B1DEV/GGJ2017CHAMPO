@@ -9,15 +9,16 @@ public class GameManager : MonoBehaviour{
 	public Tile[,] tiles = new Tile[Constantes.LARGEUR_PLATEAU,Constantes.HAUTEUR_PLATEAU];
 
     public static GameManager _instance;
+
 	public static GameManager Instance 
 	{ 
 		get {return _instance?_instance:_instance=FindObjectOfType<GameManager>(); }
 	}
 
 	public Plateau plateau;
-	public Avatar avatar;
+	public Entite avatar;
 	public List<Firefly> fireflies;
-	public List<Monstre> monstres;
+
 
 
 
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour{
         }
         //Tiles record their state
         foreach (Tile t in tiles) {
-            t.SendMessage("UpdateTick", time);
+            t.UpdateTick(time);
         }
         time++;
     }

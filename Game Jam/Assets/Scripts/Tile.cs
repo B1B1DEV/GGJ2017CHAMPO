@@ -94,7 +94,7 @@ public class Tile : MonoBehaviour {
         }
  */   }
 
-    void UpdateTick(int timeStamp)
+    public void UpdateTick(int timeStamp)
     {
         this.history[timeStamp % Constantes.MEMOIRE_ENTITEES] = State.None; 
     }
