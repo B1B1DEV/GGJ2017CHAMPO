@@ -28,9 +28,9 @@ public class Tile : MonoBehaviour {
 			if (value != _type) {
 				if (_meshObject)
 					DestroyImmediate (_meshObject);
-
+				
 				_type = value;
-
+				
 				switch (value) 
 				{
 				case Type.None:

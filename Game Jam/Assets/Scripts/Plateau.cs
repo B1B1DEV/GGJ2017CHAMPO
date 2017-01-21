@@ -49,21 +49,6 @@ public class Plateau : MonoBehaviour {
 
 
 
-	void miseAJour()
-	{
-		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
-		{
-			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
-			{
-				string name = j.ToString () + "-" + i.ToString ();
-				//GameObject.Find(name).
-			}
-		}
-	}
-
-
-
-
 
 	// Sérialisation
 	public void serialiser(string fichier, int[,] tab2)
@@ -149,7 +134,9 @@ public class Plateau : MonoBehaviour {
 		float ru = .5f;
 		float ri = Mathf.Sqrt(3)/2 * ru ;
 
-
+		/// MUR DE FOND ==================================================================================
+		
+		
 		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
 		{
 			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
@@ -167,21 +154,15 @@ public class Plateau : MonoBehaviour {
 
 				Tile tile = tileGO.GetComponent<Tile> ();
 
-				if(tilesInt[j, i] == Constantes.TILE_SOL)
-					tile.type = Tile.Type.Sol;
-				else if(tilesInt[j, i] == Constantes.TILE_NONE)
-					tile.type = Tile.Type.None;
-				else if(tilesInt[j, i] == Constantes.TILE_MUR)
-					tile.type = Tile.Type.Mur;
-				else if(tilesInt[j, i] == Constantes.TILE_PIEGE)
-					tile.type = Tile.Type.Piege;
+				tile.type = Tile.Type.Mur;
+
 			}
 		}
 	}
 
-
-
-
+	
+	
+	
 
 	public void chargementMap(int[,] map)
 	{
@@ -192,12 +173,23 @@ public class Plateau : MonoBehaviour {
 			{
 				string name = j.ToString () + "-" + i.ToString ();
 				DestroyObject(GameObject.Find(name));
+				
 			}
 		}
 
 		// Reconstruction
+		
+		
 
 		tilesInt = map;
+		
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
+		{
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
+			{
+				print(tilesInt[i,j]);
+			}
+		}
 
 		construction ();
 
