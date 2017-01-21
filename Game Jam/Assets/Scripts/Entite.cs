@@ -12,6 +12,7 @@ public class Entite : MonoBehaviour {
 	public Vector2 PositionActuelle { get; set; }
 	public bool VisibilityFrom ( Vector2 fromPos, out Dictionary<Vector2, float> intensities )
 	{
-		return false;
+		intensities = new Dictionary<Vector2, float> ();
+		return false;	
 	}
 }
