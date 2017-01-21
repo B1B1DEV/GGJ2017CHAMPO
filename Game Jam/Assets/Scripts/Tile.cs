@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[SelectionBase]
 public class Tile : MonoBehaviour {
 
 	public enum Type { None, Sol, Mur, Piege }
@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour {
 		{
 			if (value != _type) {
 				if (meshObject)
-					Destroy (meshObject);
+					DestroyImmediate (meshObject);
 
 				_type = value;
 

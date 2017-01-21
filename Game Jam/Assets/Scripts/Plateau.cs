@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+
 public class Plateau : MonoBehaviour {
 
 	public GameObject m_tile;
@@ -42,12 +42,12 @@ public class Plateau : MonoBehaviour {
 				tile.name = j+"-"+i; 
 				// On positionne chaque case
 				//tile.transform.position = new Vector3(tile.transform.position.x + j*0.2f,tile.transform.position.y, tile.transform.position.z - j);
-				tile.transform.position = new Vector3(tile.transform.position.x + j*1.0f,tile.transform.position.y, tile.transform.position.z-b + (j)*0.55f);
+				tile.transform.position = new Vector3(j*1.0f,0, j%2*0.5f+i);
 				tile.transform.rotation = Quaternion.Euler (0, 0, 0);
 			}
 			b -= 1.1f;
 		}
-		this.transform.position = new Vector3(9,12,5);
+		this.transform.position = new Vector3(9,2,5);
 		Quaternion rotation = Quaternion.Euler(new Vector3(90, 301, 0));
 		this.transform.rotation = rotation;
 	}
