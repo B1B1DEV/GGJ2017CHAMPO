@@ -163,8 +163,22 @@ public class Plateau : MonoBehaviour {
 			}
 		}
 		
-		/// ON PERCE ==========================================================================================
 		
+		
+
+		percer();
+		colonnes();
+		pieges();
+		salleCentral();
+		cheminFinal();
+		
+	}
+	
+	
+	//// PERCER ==============================================================
+	
+	public void percer()
+	{
 		int taille = Constantes.HAUTEUR_PLATEAU * Constantes.LARGEUR_PLATEAU;
 		int hole = (taille*60)/100;
 		
@@ -172,33 +186,17 @@ public class Plateau : MonoBehaviour {
 		{
 			int x=Random.Range(0, Constantes.LARGEUR_PLATEAU);
 			int y=Random.Range(0, Constantes.HAUTEUR_PLATEAU);
-			string name = x.ToString () + "-" + y.ToString ();
-			GameObject tileGO = GameObject.Find(name);
+			string n = x.ToString () + "-" + y.ToString ();
+			GameObject tileGO = GameObject.Find(n);
 			Tile tiler = tileGO.GetComponent<Tile> ();
-			tiler.type = Tile.Type.Sol;
+			
+			if(x != 0 && x != Constantes.LARGEUR_PLATEAU-1 && y != 0 && y!= Constantes.HAUTEUR_PLATEAU-1)
+				tiler.type = Tile.Type.Sol;
 		}
-		
-		
-		/*
-		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
-		{
-			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
-			{
-
-				string name = j.ToString () + "-" + i.ToString ();
-				GameObject tileGO = GameObject.Find(name);
-				int rand = Random.Range(0, 100);
-				Tile tile = tileGO.GetComponent<Tile> ();
-				
-				if(rand <= hole )
-					tile.type = Tile.Type.Sol;
-
-			}
-		}
-		*/
-		colonnes();
-		salleCentral();
 	}
+	
+	
+	
 		/// On suprime les colones isolé ========================================================================
 		
 	void colonnes()
@@ -208,13 +206,13 @@ public class Plateau : MonoBehaviour {
 			for (int j = 1; j < Constantes.LARGEUR_PLATEAU-1; j++) 
 			{
 
-				string name = j.ToString () + "-" + i.ToString ();
+				string name0 = j.ToString () + "-" + i.ToString ();
 				string name2 = (j-1).ToString () + "-" + (i-1).ToString ();
 				string name3 = (j+1).ToString () + "-" + (i).ToString ();
 				string name4 = j.ToString () + "-" + (i+1).ToString ();
 				string name5 = (j+1).ToString () + "-" + (i+1).ToString ();
 				
-				GameObject tileGO = GameObject.Find(name);
+				GameObject tileGO = GameObject.Find(name0);
 				GameObject tileGO2 = GameObject.Find(name2);
 				GameObject tileGO3 = GameObject.Find(name3);
 				GameObject tileGO4 = GameObject.Find(name4);
@@ -239,7 +237,11 @@ public class Plateau : MonoBehaviour {
 					var+=colonneUnique;
 				
 				if(rand <= colonneUnique )
-					tile.type = Tile.Type.Sol;
+				{
+					if(j != 0 && j != Constantes.LARGEUR_PLATEAU-1 && i != 0 && i!= Constantes.HAUTEUR_PLATEAU-1)
+						tile.type = Tile.Type.Sol;
+				}
+					
 
 			}
 		}
@@ -249,25 +251,74 @@ public class Plateau : MonoBehaviour {
 	
 	public void salleCentral()
 	{ 
-		// CREATION DE LA SALLE
+		/// CREATION DE LA SALLE ======================================================
 		int xMilieux = Constantes.HAUTEUR_PLATEAU/2;
 		int yMilieux = Constantes.LARGEUR_PLATEAU/2;
 		
-		string name = "";
+		string name0 = "";
 
 		
 		for(int posX = xMilieux-Constantes.RADIUS_SPAWN; posX<xMilieux+Constantes.RADIUS_SPAWN;posX++)
 			for(int posY = yMilieux-Constantes.RADIUS_SPAWN; posY<xMilieux+Constantes.RADIUS_SPAWN; posY++)
 			{
-				name = posY.ToString () + "-" + posX.ToString ();
-				GameObject tileGO = GameObject.Find(name);
+				name0 = posY.ToString () + "-" + posX.ToString ();
+				GameObject tileGO = GameObject.Find(name0);
 				Tile tiler = tileGO.GetComponent<Tile> ();
 				tiler.type = Tile.Type.Sol;
 			}
 		
 		
 	}
+	
+	/// Gestion des piges ===========================================================
+	public void pieges()
+	{
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
+		{
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
+			{
 
+				string name0 = j.ToString () + "-" + i.ToString ();
+				GameObject tileGO = GameObject.Find(name0);
+				Tile tile = tileGO.GetComponent<Tile> ();
+				
+				if(tile.type  == Tile.Type.Sol)
+				{
+					int rand = Random.Range(0, 100);
+					if(rand <= Constantes.TRAPS)
+						tile.type = Tile.Type.Piege;
+				}
+				
+
+			}
+		}
+	}
+
+	
+	/// Chemin final ===========================================================
+	
+	public void cheminFinal()
+	{
+		int randx;
+		int randy;
+		int posX = Constantes.HAUTEUR_PLATEAU/2;
+		int posY = Constantes.LARGEUR_PLATEAU/2;
+		
+		while(posX != 0 && posX != Constantes.LARGEUR_PLATEAU-1 && posY != 0 && posY != Constantes.HAUTEUR_PLATEAU-1)
+		{
+			randx = Random.Range(-1,2);
+			randy = Random.Range(-1,2);
+			posX += randx;
+			posY += randy;
+			
+			Tile tile = GameManager.Instance.tiles[posX,posY];
+			
+			tile.type = Tile.Type.Sol;
+		}
+		// Agrandissement de la sortie
+		
+		
+	}
 	
 	
 	
@@ -279,8 +330,8 @@ public class Plateau : MonoBehaviour {
 		{
 			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
 			{
-				string name = j.ToString () + "-" + i.ToString ();
-				DestroyObject(GameObject.Find(name));
+				string name0 = j.ToString () + "-" + i.ToString ();
+				DestroyObject(GameObject.Find(name0));
 				
 			}
 		}

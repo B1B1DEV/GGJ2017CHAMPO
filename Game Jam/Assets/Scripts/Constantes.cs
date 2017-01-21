@@ -19,4 +19,5 @@ public static class Constantes {
 	public static float INTENSITY_DECAY = 1f / MEMOIRE_ENTITEES;
 	
 	public static int RADIUS_SPAWN = 2;
+	public static int TRAPS = 5;
 }
