@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour{
 	public Plateau plateau;
 	public Avatar avatar;
 	public List<Firefly> fireflies;
-
+	public List<Monstre> monstres;
 
 
 
