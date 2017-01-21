@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour{
 
     public static int time = 0;
 
-    public Tile[,] tiles;
+	public Tile[,] tiles = new Tile[Constantes.LARGEUR_PLATEAU,Constantes.HAUTEUR_PLATEAU];
 
     public static GameManager _instance;
 	public static GameManager Instance 
@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour{
 	public Plateau plateau;
 	public Entite avatar;
 	public List<Firefly> fireflies;
+
+
+
 
 	// Use this for initialization
 	void Start () {
