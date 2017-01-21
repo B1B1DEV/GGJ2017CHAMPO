@@ -20,7 +20,8 @@ public class Coord
 
 	public Coord(Vector2 vector)
 	{
-
+		x = (int) (Mathf.Round (vector.x / (Constantes.INNER_RADIUS + Constantes.OUTER_RADIUS / 2)));
+		y = (int) (Mathf.Round((vector.y / Constantes.OUTER_RADIUS - x % 2)/2));
 	}
 
 	public Vector2 ToVector()
