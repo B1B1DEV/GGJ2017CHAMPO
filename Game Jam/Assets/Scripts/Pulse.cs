@@ -30,8 +30,8 @@ public class Pulse : MonoBehaviour
             ff.intensity = this.power;
 
             // Set velocity
-            float vx = 6*Mathf.Cos(Mathf.Deg2Rad*angle_degree);
-            float vz = 6*Mathf.Sin(Mathf.Deg2Rad*angle_degree);
+            float vx = Mathf.Cos(Mathf.Deg2Rad*angle_degree);
+            float vz = Mathf.Sin(Mathf.Deg2Rad*angle_degree);
             ff.velocity = new Vector3(vx, 0, vz);
 
             // Let fly
