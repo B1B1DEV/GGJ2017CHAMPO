@@ -7,4 +7,6 @@ public static class Constantes {
 	public static int HAUTEUR_PLATEAU = 10;
 	public static string FILENAME = "MAP.txt";
     public static int N_LUCIOLES = 6;
+	public static float OUTER_RADIUS = 0.5f;
+	public static float INNER_RADIUS = Mathf.Sqrt(3)/2 * OUTER_RADIUS;
 }
