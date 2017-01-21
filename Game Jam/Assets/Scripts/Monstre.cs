@@ -42,7 +42,8 @@ public class Monstre : Entite {
 		{
 			// direction dans laquelle le monstre se déplace
 			Vector2 vecteurPosition = PositionActuelle.ToVector2 ();
-			Vector2 direction = (bestSource.ToVector2() - vecteurPosition).Normalize();
+			Vector2 direction = bestSource.ToVector2 () - vecteurPosition;
+			direction.Normalize();
 			Vector2 newPosition = vecteurPosition + 2 * Constantes.INNER_RADIUS * direction;
 			PositionActuelle = new Coord (newPosition);
 		}

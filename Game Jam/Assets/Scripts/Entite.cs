@@ -45,7 +45,8 @@ public class Entite : MonoBehaviour {
 
 	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
 	{
-		maxIntensitePos = Vector2.zero;
+		maxIntensitePos = new Coord(0,0);
+		intensity = 0f;
 		return false;
 	}
 	
