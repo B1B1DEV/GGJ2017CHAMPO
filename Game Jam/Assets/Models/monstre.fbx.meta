@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b2a1f920c4f2b654ca72fe3bee48165b
-timeCreated: 1485009644
+guid: 25332905595807a4ab23758bcea23ae1
+timeCreated: 1485034131
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: polySurface518
-    4300002: mur_hexagones
+    4300000: monstre
     9500000: //RootNode
   materials:
     importMaterials: 1

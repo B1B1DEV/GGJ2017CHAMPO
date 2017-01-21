@@ -14,6 +14,11 @@ public class Monstre : Entite {
 	/// </summary>
 	private Coord bestSource;
 
+	void Start()
+	{
+		GameManager.Instance.monstres.Add (this);
+	}
+
 	public override void Move()
 	{
 		Coord source;
@@ -44,8 +49,15 @@ public class Monstre : Entite {
 			Vector2 vecteurPosition = PositionActuelle.ToVector2 ();
 			Vector2 direction = bestSource.ToVector2 () - vecteurPosition;
 			direction.Normalize();
-			Vector2 newPosition = vecteurPosition + 2 * Constantes.INNER_RADIUS * direction;
-			PositionActuelle = new Coord (newPosition);
+			Coord newPosition = new Coord(vecteurPosition + 2 * Constantes.INNER_RADIUS * direction);
+
+			Tile tile = GameManager.Instance.tiles [newPosition.x, newPosition.y];
+
+			if (tile.CurrentState == Tile.State.None && tile.nextState == Tile.State.None)
+			{
+				PositionActuelle = newPosition;
+				tile.nextState = Tile.State.Monster;
+			}
 		}
 		// déclin de l'intensité dans la mémoire du monstre
 		intensity -= Constantes.INTENSITY_DECAY;
