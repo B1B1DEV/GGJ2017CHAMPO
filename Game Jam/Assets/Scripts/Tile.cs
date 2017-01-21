@@ -14,9 +14,10 @@ public class Tile : MonoBehaviour {
 	//public Queue<float> Intensitees;
 	public float absorbance;
 	public float alpha;
+    private GameManager gm;
     //public Collider coll;
 
-	[SerializeField] private Type _type;
+    [SerializeField] private Type _type;
 	[SerializeField] private Light _light;
 	[SerializeField] private float _shownIntensity;
 	[SerializeField] private GameObject _meshObject;
@@ -61,14 +62,21 @@ public class Tile : MonoBehaviour {
 
     public bool lit; //true if currently lit
     private int ageShown; //what state should be displayed when tile is lit
-    
+
 
     #endregion
 
     #region Unity methods
+
+    private void Awake()
+    {
+        //this.GetComponent<Light>().intensity = intensity;
+        gm = GameManager.Instance;
+    }
+
     // Use this for initialization
     void Start () {
-        this.history = new State[100]; //100 last states;
+        this.history = new State[Constantes.MEMOIRE_ENTITEES]; //N last states;
         this.history[0] = State.None;
         this.lit = false;
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
@@ -90,16 +98,23 @@ public class Tile : MonoBehaviour {
         this.history[timeStamp % 100] = State.None; //Replace by actual
     }
 
-
     void OnTriggerEnter(Collider other)
     {
         Firefly ffCol = other.gameObject.GetComponent<Firefly>();
 
         if (ffCol != null)
         {
-            int age = other.GetComponent<Firefly>().age;
-            this.lit = true;
-            this.ageShown = GameManager.time - age;
+            if (this.type == Type.Mur)
+            {
+                Destroy(ffCol.gameObject);
+                gm.fireflies.Remove(ffCol);
+            }
+            else
+            {
+                int age = other.GetComponent<Firefly>().age;
+                this.lit = true;
+                this.ageShown = GameManager.time - age;
+            }
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Entite : MonoBehaviour {
+abstract public class Entite : MonoBehaviour {
 
 	public Coord PositionActuelle { get; set; }
 
@@ -20,7 +20,7 @@ public class Entite : MonoBehaviour {
 		}
 	}
 
-	public virtual void Move() {}
+	abstract public void Move ();
 
 	public void UpdateEntite ()
 	{
@@ -43,13 +43,35 @@ public class Entite : MonoBehaviour {
 
 	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
 	{
+		List<float> intensities = new List<float> ();
+		List<Coord> coords = new List<Coord> ();
+
+		//float maxIntensity = Mathf.NegativeInfinity;
+
 		foreach (KeyValuePair<int, Coord> pair in positions) {
 			int distance = Mathf.RoundToInt((pair.Value.ToVector2 () - fromPos.ToVector2 ()).SqrMagnitude () / Constantes.INNER_RADIUS);
+			if (distance == GameManager.time - pair.Key) {
+				intensities.Add (Random.value);
+				coords.Add (pair.Value);
+
+				//if (
+			}
 		}
 
-		maxIntensitePos = new Coord(0,0);
-		intensity = 0f;
-		return false;
+
+		if (intensities.Count != 0) {
+			float maxIntensity = intensities.Max ();
+			intensity = maxIntensity;
+			int indexMax = intensities.FindIndex (e => e == maxIntensity);
+			maxIntensitePos = coords [indexMax];
+			
+			return true;
+		} else {
+			intensity = 0;
+			maxIntensitePos = new Coord (0, 0);
+
+			return false;
+		}
 	}
 	
 

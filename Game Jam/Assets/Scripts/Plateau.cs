@@ -159,6 +159,7 @@ public class Plateau : MonoBehaviour {
 
 				tile.type = Tile.Type.Mur;
 
+				GameManager.Instance.tiles [j, i] = tile;
 			}
 		}
 		
