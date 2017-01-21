@@ -5,7 +5,7 @@ using UnityEngine;
 [SelectionBase]
 public class Tile : MonoBehaviour {
 
-	public enum Type : int { None, Sol, Mur, Piege, Mur1, Mur2 }
+	public enum Type : int { None, Sol, Mur, Piege, Mur1, Mur2, Monstre, Porte }
 
 	#region attributes
 	//public Queue<float> Intensitees;
@@ -50,6 +50,12 @@ public class Tile : MonoBehaviour {
                     break;
                 case Type.Mur2:
                     _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Mur_hexagones"), transform);
+                    break;
+                case Type.Monstre:
+                    _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Monstre"), transform);
+                    break;
+                case Type.Porte:
+                    _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Porte"), transform);
                     break;
                 }
 
