@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEditor;
 
-public class TileEditor : MonoBehaviour {
+[CustomEditor (typeof(Tile))]
+public class TileEditor : Editor {
+	public override void OnInspectorGUI()
+	{
+		Tile tile = (Tile)target;
 
-	// Use this for initialization
-	void Start () {
-		
+		EditorGUI.indentLevel = 0;
+
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+
 }
