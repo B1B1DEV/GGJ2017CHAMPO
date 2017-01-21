@@ -196,6 +196,7 @@ public class Plateau : MonoBehaviour {
 		}
 		*/
 		colonnes();
+		salleCentral();
 	}
 		/// On suprime les colones isolé ========================================================================
 		
@@ -241,6 +242,28 @@ public class Plateau : MonoBehaviour {
 
 			}
 		}
+		
+	}
+	
+	
+	public void salleCentral()
+	{ 
+		// CREATION DE LA SALLE
+		int xMilieux = Constantes.HAUTEUR_PLATEAU/2;
+		int yMilieux = Constantes.LARGEUR_PLATEAU/2;
+		
+		string name = "";
+
+		
+		for(int posX = xMilieux-Constantes.RADIUS_SPAWN; posX<xMilieux+Constantes.RADIUS_SPAWN;posX++)
+			for(int posY = yMilieux-Constantes.RADIUS_SPAWN; posY<xMilieux+Constantes.RADIUS_SPAWN; posY++)
+			{
+				name = posY.ToString () + "-" + posX.ToString ();
+				GameObject tileGO = GameObject.Find(name);
+				Tile tiler = tileGO.GetComponent<Tile> ();
+				tiler.type = Tile.Type.Sol;
+			}
+		
 		
 	}
 
