@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class Tile : MonoBehaviour {
-
-
+public class TileEditor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
