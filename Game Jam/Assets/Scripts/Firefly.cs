@@ -14,12 +14,12 @@ public class Firefly : Entite
         gm.fireflies.Add(this);
     }
 
-    public void WaveForward()
+    public void Move()
     {
         //Move to the next tile
         Vector3 posNextTile = new Vector3(transform.position.x + Mathf.Sqrt(3)/2*velocity.x, 0, transform.position.z + Mathf.Sqrt(3)/2*velocity.z);
-        float timeAnim = 3f;
-        this.transform.DOMove(posNextTile, timeAnim);
+        //this.transform.DOMove(posNextTile, timeAnim);
+        this.transform.position = posNextTile;
     }
 
     public void Wane()
