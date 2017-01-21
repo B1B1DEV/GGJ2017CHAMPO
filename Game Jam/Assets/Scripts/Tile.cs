@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour {
 
 	#region attributes
 	//public Queue<float> Intensitees;
-	public float absorbance;
+	public float monster_magnet;
 	public float alpha;
     private GameManager gm;
     //public Collider coll;
@@ -70,12 +70,13 @@ public class Tile : MonoBehaviour {
 
     private void Awake()
     {
-        //this.GetComponent<Light>().intensity = intensity;
+        monster_magnet = 0;
         gm = GameManager.Instance;
     }
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         this.history = new State[Constantes.MEMOIRE_ENTITEES]; //N last states;
         this.history[0] = State.None;
         this.lit = false;
@@ -84,7 +85,7 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-/*        if (lit)
+/*       if (lit)
         {
             this.GetComponentInChildren<MeshRenderer>().enabled = true;
         } else
@@ -95,7 +96,7 @@ public class Tile : MonoBehaviour {
 
     void UpdateTick(int timeStamp)
     {
-        this.history[timeStamp % 100] = State.None; //Replace by actual
+        this.history[timeStamp % Constantes.MEMOIRE_ENTITEES] = State.None; 
     }
 
     void OnTriggerEnter(Collider other)
@@ -114,7 +115,12 @@ public class Tile : MonoBehaviour {
                 int age = other.GetComponent<Firefly>().age;
                 this.lit = true;
                 this.ageShown = GameManager.time - age;
+                this.monster_magnet = ffCol.intensity;
             }
+        }
+        else
+        {
+            this.monster_magnet = this.monster_magnet/3;
         }
     }
 
@@ -125,6 +131,7 @@ public class Tile : MonoBehaviour {
         if (ffCol != null)
         {
             this.lit = false;
+            this.monster_magnet = this.monster_magnet / 3;
         }
     }
 
