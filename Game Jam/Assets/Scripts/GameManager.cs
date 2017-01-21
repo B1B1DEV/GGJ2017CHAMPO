@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour{
 	void Start () {
         //InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
         tiles = this.plateau.GetComponentsInChildren<Tile>();
-
     } 
 	
 	// Update is called once per frame
