@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Plateau : MonoBehaviour {
 
-	public GameObject m_tile;
+	public GameObject tilePrefab;
 
+	public int[,] tiles = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
 
 	void Start ()
 	{
@@ -15,15 +16,15 @@ public class Plateau : MonoBehaviour {
 
 		// Creation de la matrice 2D
 
-		int[,] matrice = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
+
 
 		// print (matrice.GetLength(0)); RECUP LARGEUR
 		// print (matrice.GetUpperBound(0)); RECUP HAUTEUR
 
-		for (int i = 0; i < matrice.GetUpperBound(0); i++) {
-			for (int j = 0; j < matrice.GetLength(0); j++)
+		for (int i = 0; i < tiles.GetUpperBound(0); i++) {
+			for (int j = 0; j < tiles.GetLength(0); j++)
 			{
-				print(matrice[i, j]);
+				print(tiles[i, j]);
 			}
 		}
 
@@ -31,24 +32,29 @@ public class Plateau : MonoBehaviour {
 
 		float b = 0;
 
+
+		float ru = .5f;
+		float ri = Mathf.Sqrt(3)/2 * ru ;
+
+
 		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
 		{
 			for (int j = Constantes.LARGEUR_PLATEAU; j > 0 ; j--) 
 			{
 				// Création des cases
 				//GameObject tile = (GameObject)Instantiate(m_tile, new Vector3(j,0,i), Quaternion.Euler(new Vector3(0,0,0)));
-				GameObject tile = (GameObject)Instantiate(m_tile, new Vector3(0,0,0), Quaternion.Euler(new Vector3(0,0,0)));
+				GameObject tile = (GameObject)Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, transform);
 				// On donne un nom à nos cases
 				tile.name = j+"-"+i; 
 				// On positionne chaque case
 				//tile.transform.position = new Vector3(tile.transform.position.x + j*0.2f,tile.transform.position.y, tile.transform.position.z - j);
-				tile.transform.position = new Vector3(j*1.0f,0, j%2*0.5f+i);
-				tile.transform.rotation = Quaternion.Euler (0, 0, 0);
+				tile.transform.position = new Vector3( (ru + ri/2) * j , 0, (j%2)*ri+  + i * ri * 2 );
+				tile.transform.rotation = Quaternion.identity;
 			}
 			b -= 1.1f;
 		}
-		this.transform.position = new Vector3(9,2,5);
-		Quaternion rotation = Quaternion.Euler(new Vector3(90, 301, 0));
-		this.transform.rotation = rotation;
+		// this.transform.position = new Vector3(9,2,5);
+		// Quaternion rotation = Quaternion.Euler(new Vector3(90, 301, 0));
+		// this.transform.rotation = rotation;
 	}
 }

@@ -7,49 +7,77 @@ public class Tile : MonoBehaviour {
 
 	public enum Type { None, Sol, Mur, Piege }
 
-	[SerializeField]
-	private Type _type;
+	#region attributes
+	//public Queue<float> Intensitees;
+	public float absorbance;
+	public float alpha;
+
+	[SerializeField] private Type _type;
+	[SerializeField] private Light _light;
+	[SerializeField] private float _shownIntensity;
+	[SerializeField] private GameObject _meshObject;
+	#endregion
+
+	#region Properties
 	public Type type 
 	{ 
 		get { return _type; }
 		set 
 		{
 			if (value != _type) {
-				if (meshObject)
-					DestroyImmediate (meshObject);
+				if (_meshObject)
+					DestroyImmediate (_meshObject);
 
 				_type = value;
 
 				switch (value) 
 				{
-					case Type.None:
-						meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/None"), transform);
-						break;
-					case Type.Sol:
-						meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Sol"), transform);
-						break;
-					case Type.Mur:
-						meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Mur"), transform);
-						break;
-					case Type.Piege:
-						meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Piege"), transform);
-						break;
+				case Type.None:
+					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/None"), transform);
+					break;
+				case Type.Sol:
+					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Sol"), transform);
+					break;
+				case Type.Mur:
+					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Mur"), transform);
+					break;
+				case Type.Piege:
+					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Piege"), transform);
+					break;
 				}
-					
-				meshObject.transform.localPosition = Vector3.zero;
-				meshObject.transform.localRotation = Quaternion.identity;
-				meshObject.transform.localScale = Vector3.one;
+
+				_meshObject.transform.localPosition = Vector3.zero;
+				_meshObject.transform.localRotation = Quaternion.identity;
+				_meshObject.transform.localScale = Vector3.one;
 			}
 		}
 	}
 
-	public Queue<float> Intensitees;
-	public float absorbance;
-	public float alpha;
+	// lumiere est en français car "light" est obsolete....... ><
+	public Light lumiere 
+	{
+		get { return _light ? _light : _light = GetComponentInChildren<Light> (); }
+	}
 
-	[SerializeField]
-	private GameObject meshObject;
+	public float shownIntensity
+	{
+		get { return _shownIntensity; }
+		set 
+		{
+			_shownIntensity = Mathf.Clamp01 (value);
+			if (_shownIntensity == 0f) 
+				lumiere.enabled = false;
+			else
+			{
+				lumiere.enabled = true;
+				lumiere.intensity = _shownIntensity;
+			}
+		}
+	}
 
+	#endregion
+
+	#region Unity methods
 	// Use this for initialization
 	void Start () {
 		
@@ -59,5 +87,5 @@ public class Tile : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	#endregion
 }
