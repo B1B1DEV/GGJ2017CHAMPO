@@ -1,16 +1,27 @@
 fileFormatVersion: 2
-guid: b2a1f920c4f2b654ca72fe3bee48165b
-timeCreated: 1485009644
+guid: d1d57e4926f94b54297cf03c523ea6b2
+timeCreated: 1485020844
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: porte_bas
+    100004: porte_haut
+    100006: sol
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: polySurface518
-    4300002: mur_hexagones
+    400002: porte_bas
+    400004: porte_haut
+    400006: sol
+    2300000: porte_bas
+    2300002: porte_haut
+    2300004: sol
+    3300000: porte_bas
+    3300002: porte_haut
+    3300004: sol
+    4300000: porte_bas
+    4300002: porte_haut
+    4300004: sol
     9500000: //RootNode
   materials:
     importMaterials: 1
