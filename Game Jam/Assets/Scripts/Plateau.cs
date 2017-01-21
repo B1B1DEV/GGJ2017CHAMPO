@@ -20,6 +20,9 @@ public class Plateau : MonoBehaviour {
 	public bool deserialisation = false;
 
 	public int decal = 0; 
+	
+	public int hole = 20;
+	public int colonneUnique = 10;
 
 
 
@@ -158,6 +161,87 @@ public class Plateau : MonoBehaviour {
 
 			}
 		}
+		
+		/// ON PERCE ==========================================================================================
+		
+		int taille = Constantes.HAUTEUR_PLATEAU * Constantes.LARGEUR_PLATEAU;
+		int hole = (taille*60)/100;
+		
+		for(int i=0; i< hole; i++)
+		{
+			int x=Random.Range(0, Constantes.LARGEUR_PLATEAU);
+			int y=Random.Range(0, Constantes.HAUTEUR_PLATEAU);
+			string name = x.ToString () + "-" + y.ToString ();
+			GameObject tileGO = GameObject.Find(name);
+			Tile tiler = tileGO.GetComponent<Tile> ();
+			tiler.type = Tile.Type.Sol;
+		}
+		
+		
+		/*
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
+		{
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
+			{
+
+				string name = j.ToString () + "-" + i.ToString ();
+				GameObject tileGO = GameObject.Find(name);
+				int rand = Random.Range(0, 100);
+				Tile tile = tileGO.GetComponent<Tile> ();
+				
+				if(rand <= hole )
+					tile.type = Tile.Type.Sol;
+
+			}
+		}
+		*/
+		colonnes();
+	}
+		/// On suprime les colones isolé ========================================================================
+		
+	void colonnes()
+	{
+		for (int i = 1; i < Constantes.HAUTEUR_PLATEAU-1 ; i++) 
+		{
+			for (int j = 1; j < Constantes.LARGEUR_PLATEAU-1; j++) 
+			{
+
+				string name = j.ToString () + "-" + i.ToString ();
+				string name2 = (j-1).ToString () + "-" + (i-1).ToString ();
+				string name3 = (j+1).ToString () + "-" + (i).ToString ();
+				string name4 = j.ToString () + "-" + (i+1).ToString ();
+				string name5 = (j+1).ToString () + "-" + (i+1).ToString ();
+				
+				GameObject tileGO = GameObject.Find(name);
+				GameObject tileGO2 = GameObject.Find(name2);
+				GameObject tileGO3 = GameObject.Find(name3);
+				GameObject tileGO4 = GameObject.Find(name4);
+				GameObject tileGO5 = GameObject.Find(name5);
+				
+				int rand = Random.Range(0, 100);
+				int var = 0;
+				
+				Tile tile = tileGO.GetComponent<Tile> ();
+				Tile tile2 = tileGO2.GetComponent<Tile> ();
+				Tile tile3 = tileGO3.GetComponent<Tile> ();
+				Tile tile4 = tileGO4.GetComponent<Tile> ();
+				Tile tile5 = tileGO5.GetComponent<Tile> ();
+				
+				if(tile2.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile3.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile4.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				if(tile5.type  == Tile.Type.Sol)
+					var+=colonneUnique;
+				
+				if(rand <= colonneUnique )
+					tile.type = Tile.Type.Sol;
+
+			}
+		}
+		
 	}
 
 	
