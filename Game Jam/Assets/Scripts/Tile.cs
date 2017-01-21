@@ -14,7 +14,6 @@ public class Tile : MonoBehaviour {
 
 	#region attributes
 	//public Queue<float> Intensitees;
-	public float monster_magnet;
 	public float alpha;
     private GameManager gm;
     //public Collider coll;
@@ -66,8 +65,6 @@ public class Tile : MonoBehaviour {
                     break;
                 }
 
-
-
 				_meshObject.transform.localPosition = Vector3.zero;
 				_meshObject.transform.localRotation = Quaternion.identity;
 				_meshObject.transform.localScale = Vector3.one;
@@ -76,6 +73,9 @@ public class Tile : MonoBehaviour {
 	}
 
     public State[] history;
+	public State CurrentState { get { return history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
+
+	public State nextState;
 
     public bool lit; //true if currently lit
     private int ageShown; //what state should be displayed when tile is lit
@@ -87,7 +87,6 @@ public class Tile : MonoBehaviour {
 
     private void Awake()
     {
-        monster_magnet = 0;
         gm = GameManager.Instance;
     }
 
@@ -97,6 +96,7 @@ public class Tile : MonoBehaviour {
         this.history = new State[Constantes.MEMOIRE_ENTITEES]; //N last states;
         this.history[0] = State.None;
         this.lit = false;
+		this.nextState = State.None;
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 	
@@ -113,7 +113,8 @@ public class Tile : MonoBehaviour {
 
     public void UpdateTick(int timeStamp)
     {
-        this.history[timeStamp % Constantes.MEMOIRE_ENTITEES] = State.None; 
+		this.history [timeStamp % Constantes.MEMOIRE_ENTITEES] = nextState;
+		nextState = State.None;
     }
 
     void OnTriggerEnter(Collider other)
@@ -132,12 +133,7 @@ public class Tile : MonoBehaviour {
                 int age = other.GetComponent<Firefly>().age;
                 this.lit = true;
                 this.ageShown = GameManager.time - age;
-                this.monster_magnet = ffCol.intensity;
             }
-        }
-        else
-        {
-            this.monster_magnet = this.monster_magnet/3;
         }
     }
 
@@ -148,7 +144,6 @@ public class Tile : MonoBehaviour {
         if (ffCol != null)
         {
             this.lit = false;
-            this.monster_magnet = this.monster_magnet / 3;
         }
     }
 

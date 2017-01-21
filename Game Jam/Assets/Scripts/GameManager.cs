@@ -18,9 +18,7 @@ public class GameManager : MonoBehaviour{
 	public Plateau plateau;
 	public Entite avatar;
 	public List<Firefly> fireflies;
-
-
-
+	public List<Monstre> monstres;
 
 	// Use this for initialization
 	void Start () {
