@@ -76,6 +76,9 @@ public class Tile : MonoBehaviour {
 	}
 
     public State[] history;
+	public State CurrentState { get { return history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
+
+	public State nextState;
 
     public bool lit; //true if currently lit
     private int ageShown; //what state should be displayed when tile is lit
@@ -97,6 +100,7 @@ public class Tile : MonoBehaviour {
         this.history = new State[Constantes.MEMOIRE_ENTITEES]; //N last states;
         this.history[0] = State.None;
         this.lit = false;
+		this.nextState = State.None;
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 	
@@ -113,7 +117,8 @@ public class Tile : MonoBehaviour {
 
     public void UpdateTick(int timeStamp)
     {
-        this.history[timeStamp % Constantes.MEMOIRE_ENTITEES] = State.None; 
+		this.history [timeStamp % Constantes.MEMOIRE_ENTITEES] = nextState;
+		nextState = State.None;
     }
 
     void OnTriggerEnter(Collider other)
