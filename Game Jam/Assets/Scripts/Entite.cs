@@ -31,22 +31,22 @@ public class Entite : MonoBehaviour {
 	}
 
 	
-	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Vector2, float> intensities )
+	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Coord, float> intensities )
 	{
 		foreach (Coord pos in positions) {
 			
 		}
 
-		intensities = new Dictionary<Vector2, float> ();
+		intensities = new Dictionary<Coord, float> ();
 		return false;	
 	}
 
 	
 
-	public bool VisibilityFrom ( Coord fromPos, out Vector2 maxIntensitePos )
+	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
 	{
 		maxIntensitePos = Vector2.zero;
-		return false;	
+		return false;
 	}
 	
 

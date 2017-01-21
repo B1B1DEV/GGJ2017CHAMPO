@@ -16,5 +16,5 @@ public static class Constantes {
 	public static int TILE_PIEGE = 3;
 
     public static float DELTA_T_LIGHT = 3f;
-
+	public static float INTENSITY_DECAY = 1f / MEMOIRE_ENTITEES;
 }
