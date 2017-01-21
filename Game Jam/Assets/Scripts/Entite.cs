@@ -35,7 +35,7 @@ public class Entite : MonoBehaviour {
 	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Vector2, float> intensities )
 	{
 		foreach (Coord pos in positions) {
-			if 
+			
 		}
 
 		intensities = new Dictionary<Vector2, float> ();
