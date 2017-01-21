@@ -5,7 +5,7 @@ using UnityEngine;
 [SelectionBase]
 public class Tile : MonoBehaviour {
 
-	public enum Type { None, Sol, Mur, Piege }
+	public enum Type : int { None, Sol, Mur, Piege }
 
 	#region attributes
 	//public Queue<float> Intensitees;

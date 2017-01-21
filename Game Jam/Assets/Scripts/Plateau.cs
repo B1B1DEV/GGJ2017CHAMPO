@@ -14,7 +14,7 @@ public class Plateau : MonoBehaviour {
 
 	// Creation de la matrice 2D
 
-	public int[,] tiles = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
+	public int[,] tilesInt = new int[Constantes.LARGEUR_PLATEAU, Constantes.HAUTEUR_PLATEAU];
 
 	public bool serialisation = false;
 	public bool deserialisation = false;
@@ -36,7 +36,7 @@ public class Plateau : MonoBehaviour {
 	void Update (){
 		if (serialisation) {
 			serialisation = false;
-			int[,] tab2 = tiles;
+			int[,] tab2 = tilesInt;
 			serialiser(Constantes.FILENAME, tab2);
 		}
 		else if (deserialisation) {
@@ -44,6 +44,23 @@ public class Plateau : MonoBehaviour {
 			deserialiser(Constantes.FILENAME, 10);
 		}
 	}
+
+
+
+
+
+	void miseAJour()
+	{
+		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
+		{
+			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
+			{
+				string name = j.ToString () + "-" + i.ToString ();
+				//GameObject.Find(name).
+			}
+		}
+	}
+
 
 
 
@@ -138,18 +155,28 @@ public class Plateau : MonoBehaviour {
 			for (int j = Constantes.LARGEUR_PLATEAU; j > 0 ; j--) 
 			{
 				// Création des cases
-				//GameObject tile = (GameObject)Instantiate(m_tile, new Vector3(j,0,i), Quaternion.Euler(new Vector3(0,0,0)));
-				GameObject tile = (GameObject)Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, transform);
+				
+				GameObject tileGO = (GameObject)Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, transform);
+
 				// On donne un nom à nos cases
-				tile.name = j+"-"+i; 
+				tileGO.name = j+"-"+i; 
 				// On positionne chaque case
 				//tile.transform.position = new Vector3(tile.transform.position.x + j*0.2f,tile.transform.position.y, tile.transform.position.z - j);
-				tile.transform.position = new Vector3( (ru + ri/2) * j , 0, (j%2)*ri+  + i * ri * 2 );
-				tile.transform.rotation = Quaternion.identity;
+				tileGO.transform.position = new Vector3( (ru + ri/2) * j , 0, (j%2)*ri+  + i * ri * 2 );
+				tileGO.transform.rotation = Quaternion.identity;
+
+				Tile tile = tileGO.GetComponent<Tile> ();
+
+				if(tilesInt[j, i] == Constantes.TILE_SOL)
+					tile.type = Tile.Type.Sol;
+				else if(tilesInt[j, i] == Constantes.TILE_NONE)
+					tile.type = Tile.Type.None;
+				else if(tilesInt[j, i] == Constantes.TILE_MUR)
+					tile.type = Tile.Type.Mur;
+				else if(tilesInt[j, i] == Constantes.TILE_PIEGE)
+					tile.type = Tile.Type.Piege;
 			}
-			b -= 1.1f;
 		}
-	
 	}
 
 
@@ -159,7 +186,6 @@ public class Plateau : MonoBehaviour {
 	public void chargementMap(int[,] map)
 	{
 		// Destruction des tiles
-		GameObject go = new GameObject();
 		for (int i = Constantes.HAUTEUR_PLATEAU; i > 0 ; i--) 
 		{
 			for (int j = Constantes.LARGEUR_PLATEAU; j >0 ; j--) 
@@ -170,6 +196,8 @@ public class Plateau : MonoBehaviour {
 		}
 
 		// Reconstruction
+
+		tilesInt = map;
 
 		construction ();
 
