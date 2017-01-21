@@ -20,23 +20,23 @@ public class Coord
 
 	public Coord(Vector2 vector)
 	{
-		x = (int) (Mathf.Round (vector.x / (Constantes.INNER_RADIUS + Constantes.OUTER_RADIUS / 2)));
-		y = (int) (Mathf.Round((vector.y / Constantes.OUTER_RADIUS - x % 2)/2));
+		x = (int) (Mathf.Round (2 * vector.x / (3 * Constantes.OUTER_RADIUS)));
+		y = (int) (Mathf.Round((vector.y / Constantes.INNER_RADIUS - x % 2)/2));
 	}
 
 	public Coord(Vector3 vector)
 	{
-		x = (int) (Mathf.Round (vector.x / (Constantes.INNER_RADIUS + Constantes.OUTER_RADIUS / 2)));
-		y = (int) (Mathf.Round((vector.z / Constantes.OUTER_RADIUS - x % 2)/2));
+		x = (int) (Mathf.Round (2 * vector.x / (3 * Constantes.OUTER_RADIUS)));
+		y = (int) (Mathf.Round((vector.z / Constantes.INNER_RADIUS - x % 2)/2));
 	}
 
 	public Vector2 ToVector2()
 	{
-		return new Vector2 ((Constantes.INNER_RADIUS + Constantes.OUTER_RADIUS / 2) * x, (x % 2 + 2 * y) * Constantes.OUTER_RADIUS);
+		return new Vector3 (1.5f * Constantes.OUTER_RADIUS * x, (x % 2 + 2 * y) * Constantes.INNER_RADIUS);
 	}
 
 	public Vector3 ToVector3()
 	{
-		return new Vector3 ((Constantes.INNER_RADIUS + Constantes.OUTER_RADIUS / 2) * x, 0, (x % 2 + 2 * y) * Constantes.OUTER_RADIUS);
+		return new Vector3 (1.5f * Constantes.OUTER_RADIUS * x, 0, (x % 2 + 2 * y) * Constantes.INNER_RADIUS);
 	}
 }
