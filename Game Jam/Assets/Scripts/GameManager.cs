@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour{
 	}
 
 	public Plateau plateau;
-	public Entite avatar;
+	public Avatar avatar;
 	public List<Firefly> fireflies;
 
 
