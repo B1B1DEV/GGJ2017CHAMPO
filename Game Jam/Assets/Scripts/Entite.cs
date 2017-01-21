@@ -51,7 +51,7 @@ public class Entite : MonoBehaviour {
 		foreach (KeyValuePair<int, Coord> pair in positions) {
 			int distance = Mathf.RoundToInt((pair.Value.ToVector2 () - fromPos.ToVector2 ()).SqrMagnitude () / Constantes.INNER_RADIUS);
 			if (distance == GameManager.time - pair.Key) {
-				intensities.Add (GameManager.Instance.tiles [pair.Value.x, pair.Value.y].absorbance);
+				intensities.Add (Random.value);
 				coords.Add (pair.Value);
 
 				//if (
