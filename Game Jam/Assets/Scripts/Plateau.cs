@@ -162,7 +162,7 @@ public class Plateau : MonoBehaviour {
 				tileGO.name = j+"-"+i; 
 				// On positionne chaque case
 				//tile.transform.position = new Vector3(tile.transform.position.x + j*0.2f,tile.transform.position.y, tile.transform.position.z - j);
-				tileGO.transform.position = new Vector3( (ru + ri/2) * j , 0, (j%2)*ri+  + i * ri * 2 );
+				tileGO.transform.position = new Coord(j , i).ToVector3();
 				tileGO.transform.rotation = Quaternion.identity;
 
 				Tile tile = tileGO.GetComponent<Tile> ();
