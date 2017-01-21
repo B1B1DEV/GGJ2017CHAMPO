@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour{
 
     public static int time = 0;
 
-	public static GameManager _instance;
+    public Component[] tiles;
+
+    public static GameManager _instance;
 	public static GameManager Instance 
 	{ 
 		get {return _instance?_instance:_instance=FindObjectOfType<GameManager>(); }
@@ -19,7 +21,7 @@ public class GameManager : MonoBehaviour{
 	// Use this for initialization
 	void Start () {
         //InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
-
+        tiles = this.plateau.GetComponentsInChildren<Tile>();
 
     } 
 	
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour{
             f.age++;
         }
         //Tiles record their state
-        foreach (Tile t in this.plateau.GetComponentsInChildren<Tile>()) {
+        foreach (Tile t in tiles) {
             t.SendMessage("UpdateTick", time);
         }
         time++;
