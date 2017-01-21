@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour {
 	//public Queue<float> Intensitees;
 	public float absorbance;
 	public float alpha;
+    //public Collider coll;
 
 	[SerializeField] private Type _type;
 	[SerializeField] private Light _light;
@@ -75,11 +76,11 @@ public class Tile : MonoBehaviour {
 		}
 	}
 
-	#endregion
+    #endregion
 
-	#region Unity methods
-	// Use this for initialization
-	void Start () {
+    #region Unity methods
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

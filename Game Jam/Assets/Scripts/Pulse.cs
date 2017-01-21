@@ -7,7 +7,6 @@ public class Pulse : MonoBehaviour
     public float power;
     public GameObject fireflyPrefab;
 
-
     // Test
     private void Start()
     {

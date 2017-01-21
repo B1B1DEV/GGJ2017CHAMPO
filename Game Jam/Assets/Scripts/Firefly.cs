@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 
-public class Firefly : MonoBehaviour
+public class Firefly : Entite
 {
     public float intensity;
     public Vector3 velocity;
@@ -20,4 +20,14 @@ public class Firefly : MonoBehaviour
     {
         // decrease intensity each time unit
     }
+
+    void OnCollisionEnter(Collision col)
+    {
+        Tile tileCol = col.gameObject.GetComponent<Tile>();
+        if (tileCol != null && tileCol.type == Tile.Type.Mur)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
