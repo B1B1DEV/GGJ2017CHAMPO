@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour{
 
 	// Use this for initialization
 	void Start () {
+        //InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
 
 
     } 
