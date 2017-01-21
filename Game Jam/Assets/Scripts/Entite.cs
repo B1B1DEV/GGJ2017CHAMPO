@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Entite : MonoBehaviour {
+abstract public class Entite : MonoBehaviour {
 
 	public Coord PositionActuelle { get; set; }
 
@@ -20,7 +20,7 @@ public class Entite : MonoBehaviour {
 		}
 	}
 
-	public virtual void Move() {}
+	abstract public void Move ();
 
 	public void UpdateEntite ()
 	{
