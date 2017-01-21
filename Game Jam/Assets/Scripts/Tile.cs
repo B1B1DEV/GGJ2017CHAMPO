@@ -14,7 +14,6 @@ public class Tile : MonoBehaviour {
 
 	#region attributes
 	//public Queue<float> Intensitees;
-	public float monster_magnet;
 	public float alpha;
     private GameManager gm;
     //public Collider coll;
@@ -66,8 +65,6 @@ public class Tile : MonoBehaviour {
                     break;
                 }
 
-
-
 				_meshObject.transform.localPosition = Vector3.zero;
 				_meshObject.transform.localRotation = Quaternion.identity;
 				_meshObject.transform.localScale = Vector3.one;
@@ -90,7 +87,6 @@ public class Tile : MonoBehaviour {
 
     private void Awake()
     {
-        monster_magnet = 0;
         gm = GameManager.Instance;
     }
 
@@ -137,12 +133,7 @@ public class Tile : MonoBehaviour {
                 int age = other.GetComponent<Firefly>().age;
                 this.lit = true;
                 this.ageShown = GameManager.time - age;
-                this.monster_magnet = ffCol.intensity;
             }
-        }
-        else
-        {
-            this.monster_magnet = this.monster_magnet/3;
         }
     }
 
@@ -153,7 +144,6 @@ public class Tile : MonoBehaviour {
         if (ffCol != null)
         {
             this.lit = false;
-            this.monster_magnet = this.monster_magnet / 3;
         }
     }
 
