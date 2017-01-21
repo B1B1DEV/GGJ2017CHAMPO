@@ -3,7 +3,7 @@
 public class Firefly
 {
     public float intensity;
-    public Vector2 velocity;
+    public Vector3 velocity;
 
     public void Wane()
     {

@@ -16,12 +16,13 @@ public class Pulse : MonoBehaviour
         for (int i = 0; i < Constantes.N_LUCIOLES; i++)
         {
             // Instantiate firefly
-            GameObject ff = (GameObject)Instantiate(fireflyPrefab, sourcePoint, Quaternion.Euler(new Vector3(0, 0, 0)));
+            GameObject ff = (GameObject)Instantiate(fireflyPrefab, sourcePoint, Quaternion.Euler(new Vector3(0, 0, angle_degree)));
             
             // On donne un nom à nos cases
             ff.name = "firefly" + i.ToString();
             
-            // Set angle and velocity
+            // Set velocity
+            //ff.GetComponent<FireFly>().velocity
 
             // select next angle
             angle_degree += 60;
