@@ -34,7 +34,7 @@ abstract public class Entite : MonoBehaviour {
 
 		intensities = new Dictionary<Coord, float> ();
 
-		Coord c;
+		Coord c= positions.ValeurActuelle;
 		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee (nbIterationsDansLePasse, out c); nbIterationsDansLePasse++) {
 			if (GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
 				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
@@ -58,7 +58,7 @@ abstract public class Entite : MonoBehaviour {
 	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
 	{
 
-		Coord c;
+		Coord c = positions.ValeurActuelle;
 		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee (nbIterationsDansLePasse, out c); nbIterationsDansLePasse++) {
 			if (GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
 				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
