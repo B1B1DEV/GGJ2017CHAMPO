@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour{
 
     public static int time = 0;
 
+	public GameObject directLight;
+
 	public Pulse pulse;
 
 	public Tile[,] tiles = new Tile[Constantes.LARGEUR_PLATEAU,Constantes.HAUTEUR_PLATEAU];
@@ -119,6 +121,8 @@ public class GameManager : MonoBehaviour{
 	public void Lose()
 	{
 		OnUpdateHistoire += delegate() {
+
+			directLight.SetActive(true);
 			status = Status.GameOver;
 			noise1.Play();
 			Time.timeScale = 0f;
@@ -155,8 +159,11 @@ public class GameManager : MonoBehaviour{
 	public void Win()
 	{
 		OnUpdateHistoire += delegate() {
+
+			directLight.SetActive(true);
 			status = Status.Victory;
 			Time.timeScale = 0f;
+
 		};
 	}
 }
