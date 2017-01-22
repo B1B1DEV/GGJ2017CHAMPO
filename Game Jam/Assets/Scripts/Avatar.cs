@@ -100,6 +100,9 @@ public class Avatar: Entite
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			nextPulse = true;
 		}
+
+		// Recenter camera
+		Camera.main.transform.position = Vector3.Lerp(transform.position + new Vector3(2, 4, 1), Camera.main.transform.position, 0.99f);
 	}
 
 
