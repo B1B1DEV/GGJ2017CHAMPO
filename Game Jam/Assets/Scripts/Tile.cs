@@ -27,6 +27,8 @@ public class Tile : MonoBehaviour {
 	public Histoire<State> stateHistory;
 	public Histoire<float> lightingHistory;
 
+    private List<Entite> entitesInTrigger;
+
 	public State nextState;
 
 	public MeshRenderer unlitTile;
@@ -64,6 +66,7 @@ public class Tile : MonoBehaviour {
 					break;
 				case Type.Mur:
 					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Mur"), transform);
+                    _meshObject.GetComponent<SphereCollider>().radius = 1.5f;
 					break;
 				case Type.Piege:
 					_meshObject = Instantiate (ResourcesLoader.Load<GameObject> ("Tiles/Piege"), transform);
@@ -112,6 +115,8 @@ public class Tile : MonoBehaviour {
 
 		stateHistory = new Histoire<State> (GetNextState);
 
+        entitesInTrigger = new List<Entite>();
+
         this.lit = false;
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
@@ -141,7 +146,7 @@ public class Tile : MonoBehaviour {
 
 
 	// Update is called once per frame
-	void Update () {
+	void Update () {/*
         if (lit)
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
@@ -150,7 +155,7 @@ public class Tile : MonoBehaviour {
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = false;
 			unlitTile.enabled = true;
-        }
+        }*/
         
     }
 
@@ -187,6 +192,9 @@ public class Tile : MonoBehaviour {
                 this.lit = true;
                 this.ageShown = GameManager.time - age;
             }
+
+            // Register
+            entitesInTrigger.Add(ffCol);
         }
     }
 
@@ -197,6 +205,9 @@ public class Tile : MonoBehaviour {
         if (ffCol != null)
         {
             this.lit = false;
+
+            // unregister
+            entitesInTrigger.Remove(ffCol);
         }
     }
 

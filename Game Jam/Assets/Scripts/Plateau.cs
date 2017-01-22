@@ -141,37 +141,27 @@ public class Plateau : MonoBehaviour {
 		/// MUR DE FOND ==================================================================================
 		
 		
-		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
-		{
-			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
-			{
+		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU; i++) {
+			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) {
 				// Création des cases
 
-				GameObject tileGO = (GameObject)Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, transform);
+				GameObject tileGO = (GameObject)Instantiate (tilePrefab, Vector3.zero, Quaternion.identity, transform);
 
 				// On donne un nom à nos cases
-				tileGO.name = j+"-"+i; 
+				tileGO.name = j + "-" + i; 
 				// On positionne chaque case
 				//tile.transform.position = new Vector3(tile.transform.position.x + j*0.2f,tile.transform.position.y, tile.transform.position.z - j);
-				tileGO.transform.position = new Coord(j , i).ToVector3();
+				tileGO.transform.position = new Coord (j, i).ToVector3 ();
 				tileGO.transform.rotation = Quaternion.identity;
 
 				Tile tile = tileGO.GetComponent<Tile> ();
 
+				//((j > Constantes.LARGEUR_PLATEAU / 2) && ((i < Constantes.HAUTEUR_PLATEAU / 3) ||( i > (Constantes.HAUTEUR_PLATEAU / 3) * 2))) || ((j < Constantes.LARGEUR_PLATEAU / 2) && ((i > Constantes.HAUTEUR_PLATEAU / 3) ||( i < (Constantes.HAUTEUR_PLATEAU / 3) * 2)))
 
-				int rand = Random.Range (1, 3);
-				switch (rand) {
-				case 0:
-					tile.type = Tile.Type.Mur;
-					break;
-				case 1:
+				if (((j > Constantes.LARGEUR_PLATEAU / 2) && ((i < Constantes.HAUTEUR_PLATEAU / 3) ||( i > (Constantes.HAUTEUR_PLATEAU / 3) * 2))) || ((j < Constantes.LARGEUR_PLATEAU / 2) && ((i >= Constantes.HAUTEUR_PLATEAU/3) &&( i <= (Constantes.HAUTEUR_PLATEAU/3)*2))))
 					tile.type = Tile.Type.Mur1;
-					break;
-				case 2:
+				else
 					tile.type = Tile.Type.Mur2;
-					break;
-				}
-
 
 				GameManager.Instance.tiles [j, i] = tile;
 			}
