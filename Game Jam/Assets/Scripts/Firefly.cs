@@ -30,7 +30,7 @@ public class Firefly : Entite
     {
         //Move to the next tile
         Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, transform.position.y, transform.position.z + velocity.z);
-        float timeAnim = 6f;
+		float timeAnim = Constantes.TURN_DURATION*.9f;
         this.transform.DOMove(posNextTile, timeAnim);
         
         //Wane

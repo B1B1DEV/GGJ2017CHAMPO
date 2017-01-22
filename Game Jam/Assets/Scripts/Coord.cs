@@ -42,6 +42,6 @@ public class Coord
 
 	public int DistanceTo(Coord other)
 	{
-		return Mathf.RoundToInt((this.ToVector2 () - other.ToVector2 ()).magnitude / Constantes.INNER_RADIUS);
+		return Mathf.RoundToInt((this.ToVector2 () - other.ToVector2 ()).magnitude / Constantes.INNER_RADIUS / 2);
 	}
 }
