@@ -16,6 +16,28 @@ public class Avatar: Entite
 
 	public override void Move()
 	{
+		int x = PositionActuelle.x;
+		int y = PositionActuelle.y;
+		bool bloque = true;
+
+		if (bloque && GameManager.Instance.tiles [x, y + 1].CurrentState == Tile.State.None)
+			bloque = false;
+		else if (bloque && GameManager.Instance.tiles [x+1, y].CurrentState == Tile.State.None)
+			bloque = false;
+		else if (bloque && GameManager.Instance.tiles [x+1, y - 1].CurrentState == Tile.State.None)
+			bloque = false;
+		else if (bloque && GameManager.Instance.tiles [x, y - 1].CurrentState == Tile.State.None)
+			bloque = false;
+		else if (bloque && GameManager.Instance.tiles [x-1, y - 1].CurrentState == Tile.State.None)
+			bloque = false;
+		else if (bloque && GameManager.Instance.tiles [x-1, y].CurrentState == Tile.State.None)
+			bloque = false;
+		else
+		{
+			// on est bloqué
+			GameManager.Instance.Lose ();
+		}
+		
 		if (nextPulse)
 		{
 			//GameManager.Instance.pulse.
@@ -25,7 +47,7 @@ public class Avatar: Entite
 		{
 			if (nextTile.CurrentState == Tile.State.None && nextTile.nextState == Tile.State.None)
 			{
-				GameManager.Instance.tiles [PositionActuelle.x, PositionActuelle.y].nextState = Tile.State.None;
+				GameManager.Instance.tiles [x, y].nextState = Tile.State.None;
 				PositionActuelle = new Coord(nextTile.transform.position);
 				nextTile.nextState = Tile.State.Player;
 
