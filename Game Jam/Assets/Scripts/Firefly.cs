@@ -8,7 +8,7 @@ public class Firefly : Entite
     private GameManager gm;
     public int age;
 
-    private void Start()
+	protected override void Start()
     {
         this.GetComponent<Light>().intensity = intensity;
         gm = GameManager.Instance;
@@ -34,6 +34,7 @@ public class Firefly : Entite
 
     public void Wane()
     {
+		
         // decrease intensity until light disappear
         intensity -= 0.1f;
         this.GetComponent<Light>().intensity = intensity;
@@ -44,6 +45,7 @@ public class Firefly : Entite
             Destroy(gameObject);
             gm.fireflies.Remove(this);
         }
+
     }
 
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
 
 
-	public enum Type : int { None, Sol, Mur, Piege, Mur1, Mur2, Monstre, Porte }
+	public enum Type : int { None, Sol, Mur, Piege, Mur1, Mur2, Monstre, Porte, PorteOuverte }
 
     //None when not occupied. Busy when Wall/Trap
     public enum State : int { None, Busy, Player, Monster }
@@ -16,7 +16,19 @@ public class Tile : MonoBehaviour {
 	//public Queue<float> Intensitees;
 	public float alpha;
     private GameManager gm;
-    //public Collider coll;
+    public Collider coll;
+
+
+	public Histoire<State> stateHistory;
+	public Histoire<float> lightingHistory;
+
+	public State nextState;
+
+	public MeshRenderer unlitTile;
+
+	public bool lit; //true if currently lit
+	private int ageShown; //what state should be displayed when tile is lit
+
 
     [SerializeField] private Type _type;
 	[SerializeField] private Light _light;
@@ -25,6 +37,8 @@ public class Tile : MonoBehaviour {
 	#endregion
 
 	#region Properties
+	public State CurrentState { get { return stateHistory.ValeurActuelle; } }//history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
+
 	public Type type 
 	{ 
 		get { return _type; }
@@ -63,6 +77,9 @@ public class Tile : MonoBehaviour {
                 case Type.Porte:
                     _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Porte"), transform);
                     break;
+				case Type.PorteOuverte:
+					_meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/PorteOuverte"), transform);
+					break;
                 }
 
 				_meshObject.transform.localPosition = Vector3.zero;
@@ -71,16 +88,6 @@ public class Tile : MonoBehaviour {
 			}
 		}
 	}
-
-    public State[] history;
-	public State CurrentState { get { return history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
-
-	public State nextState;
-
-    public bool lit; //true if currently lit
-    private int ageShown; //what state should be displayed when tile is lit
-
-
     #endregion
 
     #region Unity methods
@@ -93,28 +100,58 @@ public class Tile : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        this.history = new State[Constantes.MEMOIRE_ENTITEES]; //N last states;
-        this.history[0] = State.None;
+		nextState = State.None;
+
+		stateHistory = new Histoire<State> (GetNextState);
+
         this.lit = false;
-		this.nextState = State.None;
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
-	
+
+	State GetNextState()
+	{
+		State ret = nextState;
+		switch (type) {
+		case Type.None:
+		case Type.Mur:
+		case Type.Mur1:
+		case Type.Mur2:
+		case Type.Porte:
+			nextState = State.Busy;
+			break;
+		case Type.Piege:
+			nextState = State.None;
+			break;
+		case Type.PorteOuverte:
+		case Type.Sol:
+		case Type.Monstre:
+			// In this case, state is changed by player/monster. 
+			break;
+		}
+		return ret;
+	}
+
+
 	// Update is called once per frame
 	void Update () {
-/*       if (lit)
+        if (lit)
         {
-            this.GetComponentInChildren<MeshRenderer>().enabled = true;
+			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+			unlitTile.enabled = false;
         } else
         {
-            this.GetComponentInChildren<MeshRenderer>().enabled = false;
+			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+			unlitTile.enabled = true;
         }
- */   }
+    }
 
     public void UpdateTick(int timeStamp)
     {
+		// This should not be handled by histoire directly
+		/*
 		this.history [timeStamp % Constantes.MEMOIRE_ENTITEES] = nextState;
 		nextState = State.None;
+		*/
     }
 
     void OnTriggerEnter(Collider other)
@@ -122,8 +159,11 @@ public class Tile : MonoBehaviour {
         Firefly ffCol = other.gameObject.GetComponent<Firefly>();
 
         if (ffCol != null)
-        {
-            if (this.type == Type.Mur)
+		{
+			Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
+			Vector3 otherPos = other.transform.position - other.transform.position.y * Vector3.up;
+			// la condition est nulle.
+			if (this.type == Type.Mur && Vector3.Distance(thisPos, otherPos) < Constantes.INNER_RADIUS)
             {
                 Destroy(ffCol.gameObject);
                 gm.fireflies.Remove(ffCol);

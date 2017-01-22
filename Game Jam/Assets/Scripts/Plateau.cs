@@ -266,7 +266,9 @@ public class Plateau : MonoBehaviour {
 				Tile tiler = tileGO.GetComponent<Tile> ();
 				tiler.type = Tile.Type.Sol;
 			}
-		
+
+		Coord playerCoord = new Coord (xMilieux, yMilieux);	
+		GameObject player = Instantiate(ResourcesLoader.Load<GameObject>("ampoule"), playerCoord.ToVector3(), Quaternion.identity, transform);
 		
 	}
 	

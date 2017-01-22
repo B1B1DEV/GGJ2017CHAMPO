@@ -14,7 +14,7 @@ public class Monstre : Entite {
 	/// </summary>
 	private Coord bestSource;
 
-	void Start()
+	protected override void Start()
 	{
 		GameManager.Instance.monstres.Add (this);
 	}

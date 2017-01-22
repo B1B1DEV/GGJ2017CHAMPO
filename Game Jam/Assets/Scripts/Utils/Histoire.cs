@@ -28,11 +28,12 @@ public class Histoire<T> {
 		GameManager.Instance.OnUpdateHistoire += UpdateValeurActuelle;
 	}
 
-
+	/*
 	~Histoire()
 	{
 		GameManager.Instance.OnUpdateHistoire -= UpdateValeurActuelle;
 	}
+	*/
 	public T ValeurActuelle { get { return histoire [(GameManager.time - initialTime) % Constantes.MEMOIRE_ENTITEES]; } } 
 
 	public bool ValeurPassee(int nombreDeTour ,out T valeur)

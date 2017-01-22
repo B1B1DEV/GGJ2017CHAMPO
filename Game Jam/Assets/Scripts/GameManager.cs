@@ -6,9 +6,11 @@ public class GameManager : MonoBehaviour{
 
     public static int time = 0;
 
+	public Pulse pulse;
+
 	public Tile[,] tiles = new Tile[Constantes.LARGEUR_PLATEAU,Constantes.HAUTEUR_PLATEAU];
 
-    public static GameManager _instance;
+    private static GameManager _instance;
 
 	public static GameManager Instance 
 	{ 
@@ -27,9 +29,14 @@ public class GameManager : MonoBehaviour{
 	public event UpdateHistoireAction OnUpdateHistoire = null;
 
 
+	void Awake()
+	{
+		_instance = this;
+	}
+
 	// Use this for initialization
 	void Start () {
-        //InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
+        InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
         // tiles = this.plateau.GetComponentsInChildren<Tile>();
     } 
 	

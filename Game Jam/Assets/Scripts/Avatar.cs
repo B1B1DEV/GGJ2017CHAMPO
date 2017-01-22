@@ -11,10 +11,20 @@ public class Avatar: Entite
 
 
 	void Update() {
-		if (Input.GetMouseButtonDown(0)) {
-			Debug.Log("Pressed left click, casting ray.");
-			// CastRay();
+		/*
+		GameObject hoveredTile = GetMouseOveredTile ();
+		if (Input.GetMouseButtonDown(0) && hoveredTile != null) {
+			transform.position = hoveredTile.transform.position + Vector3.up;
 		}
+		*/
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			//GameManager.Instance.pulse.
+			GameManager.Instance.pulse.sourcePoint = transform.position;
+			GameManager.Instance.pulse.Fireflash ();
+		}
+
+		Camera.main.transform.LookAt (transform.position);
+		Camera.main.transform.position = transform.position-10f * Camera.main.transform.forward;
 	}
 
 
@@ -22,8 +32,8 @@ public class Avatar: Entite
 	{
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit, 100)) {
-			Debug.DrawLine(ray.origin, hit.point);
+		if (Physics.Raycast(ray, out hit, 100, LayerMask.NameToLayer("Tile"))) {
+			return hit.transform.gameObject;
 		}
 
 		return null;

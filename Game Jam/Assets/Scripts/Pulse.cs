@@ -10,7 +10,8 @@ public class Pulse : MonoBehaviour
     // Test
     private void Start()
     {
-        Fireflash();
+		GameManager.Instance.pulse = this;
+        //Fireflash();
     }
 
     // Shoot fireflies
@@ -30,8 +31,8 @@ public class Pulse : MonoBehaviour
             ff.intensity = this.power;
 
             // Set velocity
-            float vx = Mathf.Cos(Mathf.Deg2Rad*angle_degree) * Mathf.Sqrt(3) / 2;
-            float vz = Mathf.Sin(Mathf.Deg2Rad*angle_degree) * Mathf.Sqrt(3) / 2;
+            float vx = Mathf.Cos(Mathf.Deg2Rad*angle_degree) * Mathf.Sqrt(3) / 2 ;
+            float vz = Mathf.Sin(Mathf.Deg2Rad*angle_degree) * Mathf.Sqrt(3) / 2 ;
             ff.velocity = new Vector3(vx, 0, vz);
 
             // Let fly (or not yet)
