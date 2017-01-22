@@ -60,7 +60,7 @@ abstract public class Entite : MonoBehaviour {
 
 		Coord c = PositionActuelle;
 		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee (nbIterationsDansLePasse, out c); nbIterationsDansLePasse++) {
-			if (GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
+			if (c.x >= 0 && c.x < Constantes.LARGEUR_PLATEAU && c.y >= 0 && c.y < Constantes.HAUTEUR_PLATEAU && GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
 				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
 				Vector3 arrivee = c.ToVector3 () + Vector3.up;
 				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
