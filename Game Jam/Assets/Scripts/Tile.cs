@@ -166,7 +166,7 @@ public class Tile : MonoBehaviour {
                 mr.enabled = true;
             }
 
-            unlitTile.enabled = false;
+            //unlitTile.enabled = false;
 
 			if (type == Type.Mur || type == Type.Mur1 || type == Type.Mur2 || type == Type.Porte || type == Type.Monstre) {
 				Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
@@ -187,7 +187,7 @@ public class Tile : MonoBehaviour {
             {
                 mr.enabled = false;
             }
-			unlitTile.enabled = true;
+			//unlitTile.enabled = true;
         }
         
     }
