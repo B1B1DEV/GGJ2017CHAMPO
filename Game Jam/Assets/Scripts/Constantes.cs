@@ -21,6 +21,6 @@ public static class Constantes {
 	public static int RADIUS_SPAWN = 2;
 	public static int TRAPS = 5;
 
-	public static float TURN_DURATION = .5f;
+	public static float TURN_DURATION = 1f;
 
 }

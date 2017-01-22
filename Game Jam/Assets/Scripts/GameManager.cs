@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour{
 
 	public event Firefly.DestroyFireflyAction DestroyFireflyEvent = null;
 
-	enum Status {Normal, Paused, GameOver, Victory};
-	Status status;
+	public enum Status {Normal, Paused, GameOver, Victory};
+	public Status status { get; private set; }
 
 	void Awake()
 	{
@@ -110,8 +110,10 @@ public class GameManager : MonoBehaviour{
 
 	public void Lose()
 	{
-		status = Status.GameOver;
-		Time.timeScale = 0f;
+		OnUpdateHistoire += delegate() {
+			status = Status.GameOver;
+			Time.timeScale = 0f;
+		};
 	}
 
 	void OnGUI()
@@ -135,7 +137,9 @@ public class GameManager : MonoBehaviour{
 
 	public void Win()
 	{
-		status = Status.Victory;
-		Time.timeScale = 0f;
+		OnUpdateHistoire += delegate() {
+			status = Status.Victory;
+			Time.timeScale = 0f;
+		};
 	}
 }

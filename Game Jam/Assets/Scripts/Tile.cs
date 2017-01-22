@@ -33,7 +33,7 @@ public class Tile : MonoBehaviour {
 
 	public MeshRenderer unlitTile;
 
-	public bool lit { get { return entitesInTrigger.Count != 0; } } //true if currently lit
+	public bool lit { get { return entitesInTrigger.Count != 0 || GameManager.Instance.status == GameManager.Status.GameOver || GameManager.Instance.status == GameManager.Status.Victory; } } //true if currently lit
 	private int ageShown; //what state should be displayed when tile is lit
 
 
