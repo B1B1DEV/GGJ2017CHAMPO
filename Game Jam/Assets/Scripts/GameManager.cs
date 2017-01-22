@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour{
 
 	// Use this for initialization
 	void Start () {
-        InvokeRepeating("FourSecondsUpdateLoop", 0, 2.0f);
+		InvokeRepeating("FourSecondsUpdateLoop", 0, Constantes.TURN_DURATION);
         // tiles = this.plateau.GetComponentsInChildren<Tile>();
     } 
 	
