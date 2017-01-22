@@ -29,9 +29,13 @@ public class GameManager : MonoBehaviour{
 
 	public event Firefly.DestroyFireflyAction DestroyFireflyEvent = null;
 
+	public enum Status {Normal, Paused, GameOver, Victory};
+	public Status status;
+
 	void Awake()
 	{
 		_instance = this;
+		status = Status.Normal;
 	}
 
 	// Use this for initialization
@@ -42,9 +46,25 @@ public class GameManager : MonoBehaviour{
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKeyDown (KeyCode.Escape))
+		{
+			switch (status)
+			{
+			case Status.Normal:
+				Time.timeScale = 0f;
+				status = Status.Paused;
+				break;
+			case Status.Paused:
+				Time.timeScale = 1f;
+				status = Status.Normal;
+				break;
+			case Status.GameOver:
+			case Status.Victory:
+				Application.Quit ();
+				break;
+			}
+		}
 	}
-
 
     void FourSecondsUpdateLoop()
     {
