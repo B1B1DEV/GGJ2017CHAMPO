@@ -37,6 +37,11 @@ public class Coord
 
 	public Vector3 ToVector3()
 	{
-		return new Vector3 (1.5f * Constantes.OUTER_RADIUS * x, 0, (x % 2 + 2 * y) * Constantes.INNER_RADIUS);
+		return new Vector3 (1.5f * Constantes.OUTER_RADIUS * x, 0f, (x % 2 + 2 * y) * Constantes.INNER_RADIUS);
+	}
+
+	public int DistanceTo(Coord other)
+	{
+		return Mathf.RoundToInt((this.ToVector2 () - other.ToVector2 ()).SqrMagnitude () / Constantes.INNER_RADIUS);
 	}
 }

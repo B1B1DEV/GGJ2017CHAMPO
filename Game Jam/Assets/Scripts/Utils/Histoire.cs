@@ -10,6 +10,9 @@ public delegate void UpdateHistoireAction ();
 /// Ceci est un monstre, mais c'est aussi mon enfant, je ne peut plus m'en débarasser maintenant. 
 /// </summary>
 public class Histoire<T> {
+
+
+
 	public delegate T GetValueDelegate();
 
 	private T[] histoire = new T[Constantes.MEMOIRE_ENTITEES];
@@ -34,7 +37,7 @@ public class Histoire<T> {
 
 	public bool ValeurPassee(int nombreDeTour ,out T valeur)
 	{
-		if (GameManager.time - nombreDeTour - initialTime < 0) {
+		if (GameManager.time - nombreDeTour  < initialTime || nombreDeTour > Constantes.MEMOIRE_ENTITEES ) {
 			valeur = default(T);
 			return false;
 		}

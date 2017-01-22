@@ -18,7 +18,7 @@ public class Firefly : Entite
 
     public void WaveForward()
     {
-        InvokeRepeating("UpdateEntite", 0f, Constantes.DELTA_T_LIGHT);
+        // InvokeRepeating("UpdateEntite", 0f, Constantes.DELTA_T_LIGHT);
     }
 
     public override void Move()

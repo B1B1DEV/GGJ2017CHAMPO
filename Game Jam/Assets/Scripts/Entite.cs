@@ -5,19 +5,18 @@ using System.Linq;
 
 abstract public class Entite : MonoBehaviour {
 
-	public Coord PositionActuelle { get; set; }
 
-	private SortedDictionary<int, Coord> _positions;
-	private SortedDictionary<int, Coord> positions {
-		get
-		{
-			if (_positions == null)
-			{
-				_positions = new SortedDictionary<int, Coord> ();
-				_positions.Add (GameManager.time, PositionActuelle);
-			}
-			return _positions;
-		}
+	private Histoire<Coord> positions;
+	public Coord PositionActuelle 
+	{ 
+		get { return positions.ValeurActuelle; } 
+		set { transform.position = value.ToVector3 (); }
+	}
+
+
+	protected virtual void Start()
+	{
+		positions = new Histoire<Coord> (() => new Coord (transform.position));
 	}
 
 	abstract public void Move ();
@@ -25,10 +24,6 @@ abstract public class Entite : MonoBehaviour {
 	public void UpdateEntite ()
 	{
 		Move ();
-		while ( positions.Count >= Constantes.MEMOIRE_ENTITEES )
-			positions.Remove(positions.First().Key);
-		
-		positions.Add (GameManager.time, PositionActuelle);
 	}
 
 	
@@ -48,16 +43,22 @@ abstract public class Entite : MonoBehaviour {
 
 		//float maxIntensity = Mathf.NegativeInfinity;
 
-		foreach (KeyValuePair<int, Coord> pair in positions) {
-			int distance = Mathf.RoundToInt((pair.Value.ToVector2 () - fromPos.ToVector2 ()).SqrMagnitude () / Constantes.INNER_RADIUS);
-			if (distance == GameManager.time - pair.Key) {
-				intensities.Add (Random.value);
-				coords.Add (pair.Value);
+		Coord c;
+		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee(nbIterationsDansLePasse, out c) ; nbIterationsDansLePasse++) {
+			if (c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
+				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
+				Vector3 arrivee = c.ToVector3 () + Vector3.up;
+				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
+				RaycastHit hit;
 
-				//if (
+				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"))) 
+				{
+					intensities.Add (Random.value);
+					coords.Add (c);
+				}
 			}
 		}
-
+	
 
 		if (intensities.Count != 0) {
 			float maxIntensity = intensities.Max ();

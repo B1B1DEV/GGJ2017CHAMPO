@@ -16,9 +16,16 @@ public class GameManager : MonoBehaviour{
 	}
 
 	public Plateau plateau;
-	public Entite avatar;
+	private Avatar _avatar;
+	public Avatar avatar
+	{ 
+		get {return _avatar?_avatar:_avatar=FindObjectOfType<Avatar>(); }
+	}
 	public List<Firefly> fireflies;
 	public List<Monstre> monstres;
+
+	public event UpdateHistoireAction OnUpdateHistoire = null;
+
 
 	// Use this for initialization
 	void Start () {
@@ -39,11 +46,22 @@ public class GameManager : MonoBehaviour{
         foreach (Firefly f in fireflies)
         {
             f.age++;
+			f.UpdateEntite ();
         }
+
+		foreach (Monstre m in monstres) {
+			m.UpdateEntite ();
+		}
+
+		avatar.UpdateEntite ();
+
         //Tiles record their state
         foreach (Tile t in tiles) {
             t.UpdateTick(time);
         }
+
         time++;
+
+		OnUpdateHistoire.Invoke ();
     }
 }
