@@ -23,8 +23,8 @@ public class Histoire<T> {
 	{
 		initialTime = GameManager.time;
 		this.getter = getter;
-		histoire [0] = getter();
 
+		UpdateValeurActuelle ();
 		GameManager.Instance.OnUpdateHistoire += UpdateValeurActuelle;
 	}
 

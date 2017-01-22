@@ -27,13 +27,13 @@ public class Tile : MonoBehaviour {
 	public Histoire<State> stateHistory;
 	public Histoire<float> lightingHistory;
 
-    private List<Entite> entitesInTrigger;
+	private List<Firefly> entitesInTrigger;
 
 	public State nextState;
 
 	public MeshRenderer unlitTile;
 
-	public bool lit; //true if currently lit
+	public bool lit { get { return entitesInTrigger.Count != 0; } } //true if currently lit
 	private int ageShown; //what state should be displayed when tile is lit
 
 
@@ -113,11 +113,13 @@ public class Tile : MonoBehaviour {
     {
 		nextState = State.None;
 
+		entitesInTrigger = new List<Firefly>();
+
 		stateHistory = new Histoire<State> (GetNextState);
+		lightingHistory = new Histoire<float> (GetLighting);
 
-        entitesInTrigger = new List<Entite>();
-
-        this.lit = false;
+        
+	
         //this.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 
@@ -144,18 +146,40 @@ public class Tile : MonoBehaviour {
 		return ret;
 	}
 
+	float GetLighting()
+	{
+		float l = 0;
+
+		foreach (Firefly f in entitesInTrigger) {
+			l += f.intensity / (1 + Vector3.Distance(f.transform.position, transform.position));
+		}
+		return l;
+	}
 
 	// Update is called once per frame
-	void Update () {/*
+	void Update () {
         if (lit)
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 			unlitTile.enabled = false;
+
+			if (type == Type.Mur || type == Type.Mur1 || type == Type.Mur2) {
+				Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
+				foreach (Firefly f in entitesInTrigger) {
+					Vector3 fPos = f.transform.position - f.transform.position.y * Vector3.up;
+
+					if (Vector3.Distance (thisPos, fPos) < Constantes.INNER_RADIUS) {
+
+						f.DestroyFirefly ();
+
+					}
+				}
+			}
         } else
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = false;
 			unlitTile.enabled = true;
-        }*/
+        }
         
     }
 
@@ -178,23 +202,15 @@ public class Tile : MonoBehaviour {
 
         if (ffCol != null)
 		{
-			Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
-			Vector3 otherPos = other.transform.position - other.transform.position.y * Vector3.up;
-			// la condition est nulle.
-			if (this.type == Type.Mur && Vector3.Distance(thisPos, otherPos) < Constantes.INNER_RADIUS)
-            {
-                Destroy(ffCol.gameObject);
-                gm.fireflies.Remove(ffCol);
-            }
-            else
-            {
-                int age = other.GetComponent<Firefly>().age;
-                this.lit = true;
-                this.ageShown = GameManager.time - age;
-            }
+            int age = other.GetComponent<Firefly>().age;
+
+
+            this.ageShown = GameManager.time - age;
+     
 
             // Register
             entitesInTrigger.Add(ffCol);
+			ffCol.OnDestroy += () => entitesInTrigger.Remove(ffCol);
         }
     }
 
@@ -204,10 +220,9 @@ public class Tile : MonoBehaviour {
 
         if (ffCol != null)
         {
-            this.lit = false;
-
             // unregister
             entitesInTrigger.Remove(ffCol);
+
         }
     }
 
