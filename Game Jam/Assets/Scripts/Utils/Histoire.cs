@@ -50,4 +50,9 @@ public class Histoire<T> {
 	{
 		histoire [(GameManager.time - initialTime) % Constantes.MEMOIRE_ENTITEES] = getter ();
 	}
+
+	public void Terminer()
+	{
+		GameManager.Instance.OnUpdateHistoire -= UpdateValeurActuelle;
+	}
 }

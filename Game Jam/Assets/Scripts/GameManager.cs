@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour{
 	public Tile[,] tiles = new Tile[Constantes.LARGEUR_PLATEAU,Constantes.HAUTEUR_PLATEAU];
 
     private static GameManager _instance;
-
 	public static GameManager Instance 
 	{ 
 		get {return _instance?_instance:_instance=FindObjectOfType<GameManager>(); }
@@ -28,6 +27,7 @@ public class GameManager : MonoBehaviour{
 
 	public event UpdateHistoireAction OnUpdateHistoire = null;
 
+	public event Firefly.DestroyFireflyAction DestroyFireflyEvent = null;
 
 	void Awake()
 	{
@@ -55,6 +55,11 @@ public class GameManager : MonoBehaviour{
             f.age++;
 			f.UpdateEntite ();
         }
+
+		if (DestroyFireflyEvent != null) {
+			DestroyFireflyEvent.Invoke ();
+			DestroyFireflyEvent = null;
+		}
 
 		foreach (Monstre m in monstres) {
 			m.UpdateEntite ();

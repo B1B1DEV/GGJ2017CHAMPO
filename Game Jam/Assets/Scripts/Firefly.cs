@@ -8,6 +8,8 @@ public class Firefly : Entite
     private GameManager gm;
     public int age;
 
+	public delegate void DestroyFireflyAction();
+
 	protected override void Start()
     {
 		base.Start ();
@@ -43,8 +45,11 @@ public class Firefly : Entite
         // Destroy if zero
         if (intensity <= 0f)
         {
-            Destroy(gameObject);
-            gm.fireflies.Remove(this);
+			GameManager.Instance.DestroyFireflyEvent += delegate {
+				Destroy(gameObject);
+				gm.fireflies.Remove(this);	
+				positions.Terminer();
+			};
         }
 
     }

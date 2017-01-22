@@ -6,7 +6,7 @@ using System.Linq;
 abstract public class Entite : MonoBehaviour {
 
 
-	private Histoire<Coord> positions;
+	protected Histoire<Coord> positions;
 	public Coord PositionActuelle 
 	{ 
 		get { return positions.ValeurActuelle; } 
