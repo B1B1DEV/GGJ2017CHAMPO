@@ -160,8 +160,13 @@ public class Tile : MonoBehaviour {
 	void Update () {
         if (lit)
         {
-			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
-			unlitTile.enabled = false;
+            MeshRenderer[] renderers = _meshObject.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer mr in renderers)
+            {
+                mr.enabled = true;
+            }
+
+            unlitTile.enabled = false;
 
 			if (type == Type.Mur || type == Type.Mur1 || type == Type.Mur2 || type == Type.Porte || type == Type.Monstre) {
 				Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
@@ -177,7 +182,11 @@ public class Tile : MonoBehaviour {
 			}
         } else
         {
-			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+            MeshRenderer[] renderers = _meshObject.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer mr in renderers)
+            {
+                mr.enabled = false;
+            }
 			unlitTile.enabled = true;
         }
         
