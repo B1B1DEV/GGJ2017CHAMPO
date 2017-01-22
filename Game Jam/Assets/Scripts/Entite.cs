@@ -39,7 +39,7 @@ abstract public class Entite : MonoBehaviour {
 				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
 				RaycastHit hit;
 
-				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"))) {
+				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"),QueryTriggerInteraction.Collide)) {
 					intensities.Add (c, 1f);
 				}
 			}
