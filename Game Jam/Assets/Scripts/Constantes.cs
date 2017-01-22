@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Constantes {
-	public static int LARGEUR_PLATEAU = 40;
-	public static int HAUTEUR_PLATEAU = 40;
+	public static int LARGEUR_PLATEAU = 30;
+	public static int HAUTEUR_PLATEAU = 30;
 	public static string FILENAME = "MAP.txt";
     public static int N_LUCIOLES = 6;
 	public static float OUTER_RADIUS = 0.5f;

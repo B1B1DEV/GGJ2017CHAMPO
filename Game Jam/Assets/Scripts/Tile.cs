@@ -141,7 +141,7 @@ public class Tile : MonoBehaviour {
 
 
 	// Update is called once per frame
-	void Update () {
+	void Update () {/*
         if (lit)
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
@@ -150,7 +150,8 @@ public class Tile : MonoBehaviour {
         {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = false;
 			unlitTile.enabled = true;
-        }
+        }*/
+        
     }
 
     public void UpdateTick(int timeStamp)

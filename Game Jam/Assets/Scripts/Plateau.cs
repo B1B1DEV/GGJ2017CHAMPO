@@ -21,8 +21,9 @@ public class Plateau : MonoBehaviour {
 
 	public int decal = 0; 
 	
-	public int hole = 20;
-	public int colonneUnique = 10;
+	public int hole = 30;
+	public int colonneUnique = 15;
+	public int nbMaxMonstre = 5;
 
 
 
@@ -145,7 +146,7 @@ public class Plateau : MonoBehaviour {
 			for (int j = 0; j < Constantes.LARGEUR_PLATEAU; j++) 
 			{
 				// Création des cases
-				
+
 				GameObject tileGO = (GameObject)Instantiate(tilePrefab, Vector3.zero, Quaternion.identity, transform);
 
 				// On donne un nom à nos cases
@@ -157,7 +158,20 @@ public class Plateau : MonoBehaviour {
 
 				Tile tile = tileGO.GetComponent<Tile> ();
 
-				tile.type = Tile.Type.Mur;
+
+				int rand = Random.Range (1, 3);
+				switch (rand) {
+				case 0:
+					tile.type = Tile.Type.Mur;
+					break;
+				case 1:
+					tile.type = Tile.Type.Mur1;
+					break;
+				case 2:
+					tile.type = Tile.Type.Mur2;
+					break;
+				}
+
 
 				GameManager.Instance.tiles [j, i] = tile;
 			}
@@ -171,6 +185,7 @@ public class Plateau : MonoBehaviour {
 		pieges();
 		salleCentral();
 		cheminFinal();
+		monstreSpawn ();
 		
 	}
 	
@@ -267,14 +282,14 @@ public class Plateau : MonoBehaviour {
 				tiler.type = Tile.Type.Sol;
 			}
 
-		// ========= Création du joueur, ajout d'un monstre;
+		// ========= Création du joueur
 		Coord playerCoord = new Coord (xMilieux, yMilieux);	
 		GameObject player = Instantiate(ResourcesLoader.Load<GameObject>("ampoule"), playerCoord.ToVector3(), Quaternion.identity, transform);
 
-		Instantiate (ResourcesLoader.Load<GameObject> ("MonstreTempReel"), new Coord (xMilieux + 2, yMilieux + 2).ToVector3 (), Quaternion.identity, transform);
+		//Instantiate (ResourcesLoader.Load<GameObject> ("MonstreTempReel"), new Coord (xMilieux + 2, yMilieux + 2).ToVector3 (), Quaternion.identity, transform);
 	}
 	
-	/// Gestion des piges ===========================================================
+	/// Gestion des piéges ===========================================================
 	public void pieges()
 	{
 		for (int i = 0; i < Constantes.HAUTEUR_PLATEAU ; i++) 
@@ -307,6 +322,8 @@ public class Plateau : MonoBehaviour {
 		int randy;
 		int posX = Constantes.HAUTEUR_PLATEAU/2;
 		int posY = Constantes.LARGEUR_PLATEAU/2;
+
+		Tile tile = GameManager.Instance.tiles[posX,posY];
 		
 		while(posX != 0 && posX != Constantes.LARGEUR_PLATEAU-1 && posY != 0 && posY != Constantes.HAUTEUR_PLATEAU-1)
 		{
@@ -315,17 +332,39 @@ public class Plateau : MonoBehaviour {
 			posX += randx;
 			posY += randy;
 			
-			Tile tile = GameManager.Instance.tiles[posX,posY];
+			tile = GameManager.Instance.tiles[posX,posY];
 			
 			tile.type = Tile.Type.Sol;
 		}
+
+		tile.type = Tile.Type.Porte;
 		// Agrandissement de la sortie
-		
-		
 	}
 	
-	
-	
+	/// AJOUT MONSTRES ===========================================================
+
+	public void monstreSpawn()
+	{
+		int cpt = 0;
+
+		for (int i = 0; i < nbMaxMonstre; i++) {
+			do
+			{
+				int x=Random.Range(0, Constantes.LARGEUR_PLATEAU);
+				int y=Random.Range(0, Constantes.HAUTEUR_PLATEAU);
+
+				Tile tile = GameManager.Instance.tiles[x,y];
+
+				if(tile.type == Tile.Type.Sol)
+				{
+					cpt++;
+					Instantiate (ResourcesLoader.Load<GameObject> ("MonstreTempReel"), new Coord (x, y).ToVector3 (), Quaternion.identity, transform);
+				}
+
+			}while(cpt< nbMaxMonstre);
+		}
+	}
+
 
 	public void chargementMap(int[,] map)
 	{
