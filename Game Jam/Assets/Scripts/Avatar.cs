@@ -28,6 +28,12 @@ public class Avatar: Entite
 				GameManager.Instance.tiles [PositionActuelle.x, PositionActuelle.y].nextState = Tile.State.None;
 				PositionActuelle = new Coord(nextTile.transform.position);
 				nextTile.nextState = Tile.State.Player;
+
+				// test piège
+				if (nextTile.type == Tile.Type.Piege)
+				{
+					GameManager.Instance.Lose();
+				}
 			}
 
 			Camera.main.transform.position = transform.position + new Vector3 (2, 4, 1);
@@ -44,6 +50,8 @@ public class Avatar: Entite
 	{
 		if (Input.GetMouseButtonDown(0)) {
 			nextTile = GetMouseOveredTile ();
+			if (nextTile == null)
+				return;
 			Vector3 deplacement = nextTile.transform.position - PositionActuelle.ToVector3 ();
 			if (deplacement.magnitude > 2 * Constantes.INNER_RADIUS + 1e-3)
 			{

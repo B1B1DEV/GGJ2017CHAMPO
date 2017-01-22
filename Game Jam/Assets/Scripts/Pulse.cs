@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
+
 
 public class Pulse : MonoBehaviour
 {
@@ -41,6 +43,8 @@ public class Pulse : MonoBehaviour
             // select next angle
             angle_degree += 60;
         }
+
+
     }
 
 
