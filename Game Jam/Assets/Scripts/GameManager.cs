@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour{
 	public enum Status {Normal, Paused, GameOver, Victory};
 	public Status status { get; private set; }
 
+	public AudioSource[] sounds;
+	public AudioSource noise1;
+
 	void Awake()
 	{
 		_instance = this;
@@ -42,6 +45,8 @@ public class GameManager : MonoBehaviour{
 	void Start () {
 		InvokeRepeating("FourSecondsUpdateLoop", 0, Constantes.TURN_DURATION);
         // tiles = this.plateau.GetComponentsInChildren<Tile>();
+		sounds = GetComponents<AudioSource> ();
+		noise1 = sounds [0];
     } 
 	
 	// Update is called once per frame
@@ -112,7 +117,9 @@ public class GameManager : MonoBehaviour{
 	{
 		OnUpdateHistoire += delegate() {
 			status = Status.GameOver;
+			noise1.Play();
 			Time.timeScale = 0f;
+
 		};
 	}
 
