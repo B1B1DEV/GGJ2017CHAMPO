@@ -1,10 +1,14 @@
 using UnityEngine;
+using System.Collections;
 
 public class Avatar: Entite
 {
 	private Tile nextTile;
 	private bool nextPulse;
 	private bool openDoor;
+
+	//Sound
+	public AudioSource source;
 
 	protected override void Start()
 	{
@@ -55,6 +59,8 @@ public class Avatar: Entite
 			//GameManager.Instance.pulse.
 			GameManager.Instance.pulse.sourcePoint = transform.position + 0.5f*Vector3.up;
 			GameManager.Instance.pulse.Fireflash ();
+			//Sound
+			source.PlayOneShot(source.clip, 1.0f);
 		} else if (nextTile)
 		{
 			Debug.Log (nextTile.CurrentState);
