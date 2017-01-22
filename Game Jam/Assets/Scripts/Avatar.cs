@@ -11,12 +11,15 @@ public class Avatar: Entite
 
 
 	void Update() {
+		
 		/*
-		GameObject hoveredTile = GetMouseOveredTile ();
-		if (Input.GetMouseButtonDown(0) && hoveredTile != null) {
-			transform.position = hoveredTile.transform.position + Vector3.up;
+		if (Input.GetMouseButtonDown(0)  != null) {
+			GameObject hoveredTile = GetMouseOveredTile ();
+			if (hoveredTile)
+				transform.position = hoveredTile.transform.position + Vector3.up;
 		}
 		*/
+
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			//GameManager.Instance.pulse.
 			GameManager.Instance.pulse.sourcePoint = transform.position;

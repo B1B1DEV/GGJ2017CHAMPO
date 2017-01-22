@@ -16,6 +16,7 @@ public class Monstre : Entite {
 
 	protected override void Start()
 	{
+		base.Start ();
 		GameManager.Instance.monstres.Add (this);
 	}
 
@@ -55,6 +56,7 @@ public class Monstre : Entite {
 
 			if (tile.CurrentState == Tile.State.None && tile.nextState == Tile.State.None)
 			{
+				GameManager.Instance.tiles [PositionActuelle.x, PositionActuelle.y].nextState = Tile.State.None;
 				PositionActuelle = newPosition;
 				tile.nextState = Tile.State.Monster;
 			}

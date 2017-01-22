@@ -267,9 +267,11 @@ public class Plateau : MonoBehaviour {
 				tiler.type = Tile.Type.Sol;
 			}
 
+		// ========= Création du joueur, ajout d'un monstre;
 		Coord playerCoord = new Coord (xMilieux, yMilieux);	
 		GameObject player = Instantiate(ResourcesLoader.Load<GameObject>("ampoule"), playerCoord.ToVector3(), Quaternion.identity, transform);
-		
+
+		Instantiate (ResourcesLoader.Load<GameObject> ("MonstreTempReel"), new Coord (xMilieux + 2, yMilieux + 2).ToVector3 (), Quaternion.identity, transform);
 	}
 	
 	/// Gestion des piges ===========================================================

@@ -62,13 +62,25 @@ public class GameManager : MonoBehaviour{
 
 		avatar.UpdateEntite ();
 
+
+
         //Tiles record their state
         foreach (Tile t in tiles) {
             t.UpdateTick(time);
         }
 
+		Coord avatarPos = avatar.PositionActuelle;
+		Dictionary<Coord, float> seenMonsters;
+		foreach (Monstre m in monstres) {
+			m.VisibilityFrom (avatarPos, out seenMonsters);
+			foreach (KeyValuePair<Coord, float> pair in seenMonsters) {
+				tiles [pair.Key.x, pair.Key.y].type = Tile.Type.Monstre;
+			}
+		}
+
         time++;
 
 		OnUpdateHistoire.Invoke ();
+
     }
 }

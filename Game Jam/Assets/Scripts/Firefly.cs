@@ -10,6 +10,7 @@ public class Firefly : Entite
 
 	protected override void Start()
     {
+		base.Start ();
         this.GetComponent<Light>().intensity = intensity;
         gm = GameManager.Instance;
         gm.fireflies.Add(this);

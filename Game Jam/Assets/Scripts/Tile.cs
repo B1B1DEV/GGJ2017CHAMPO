@@ -11,6 +11,11 @@ public class Tile : MonoBehaviour {
     //None when not occupied. Busy when Wall/Trap
     public enum State : int { None, Busy, Player, Monster }
 
+	#region Delegates & events
+	delegate void VoidDelegate();
+	event VoidDelegate OnNextUpdateTick = null;
+	#endregion
+
 
 	#region attributes
 	//public Queue<float> Intensitees;
@@ -34,6 +39,7 @@ public class Tile : MonoBehaviour {
 	[SerializeField] private Light _light;
 	[SerializeField] private float _shownIntensity;
 	[SerializeField] private GameObject _meshObject;
+	[SerializeField] private Type _prevType = Type.Sol;
 	#endregion
 
 	#region Properties
@@ -47,8 +53,6 @@ public class Tile : MonoBehaviour {
 			if (value != _type) {
 				if (_meshObject)
 					DestroyImmediate (_meshObject);
-
-				_type = value;
 
 				switch (value) 
 				{
@@ -71,8 +75,10 @@ public class Tile : MonoBehaviour {
                 case Type.Mur2:
                     _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Mur_hexagones"), transform);
                     break;
-                case Type.Monstre:
-                    _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Monstre"), transform);
+				case Type.Monstre:
+					_prevType = _type;
+					_meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Monstre"), transform);
+					OnNextUpdateTick += () => type = _prevType;
                     break;
                 case Type.Porte:
                     _meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/Porte"), transform);
@@ -81,6 +87,8 @@ public class Tile : MonoBehaviour {
 					_meshObject = Instantiate(ResourcesLoader.Load<GameObject>("Tiles/PorteOuverte"), transform);
 					break;
                 }
+
+				_type = value;
 
 				_meshObject.transform.localPosition = Vector3.zero;
 				_meshObject.transform.localRotation = Quaternion.identity;
@@ -147,6 +155,10 @@ public class Tile : MonoBehaviour {
 
     public void UpdateTick(int timeStamp)
     {
+		if (OnNextUpdateTick != null) {
+			OnNextUpdateTick.Invoke ();
+			OnNextUpdateTick = null;
+		}
 		// This should not be handled by histoire directly
 		/*
 		this.history [timeStamp % Constantes.MEMOIRE_ENTITEES] = nextState;

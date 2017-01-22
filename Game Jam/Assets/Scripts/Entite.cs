@@ -29,8 +29,23 @@ abstract public class Entite : MonoBehaviour {
 	
 	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Coord, float> intensities )
 	{
-		
 		intensities = new Dictionary<Coord, float> ();
+
+		Coord c;
+		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee (nbIterationsDansLePasse, out c); nbIterationsDansLePasse++) {
+			if (GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
+				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
+				Vector3 arrivee = c.ToVector3 () + Vector3.up;
+				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
+				RaycastHit hit;
+
+				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"))) {
+					intensities.Add (c, 1f);
+				}
+			}
+		}
+
+
 		return false;	
 	}
 
@@ -43,7 +58,7 @@ abstract public class Entite : MonoBehaviour {
 
 		//float maxIntensity = Mathf.NegativeInfinity;
 
-		Coord c;
+		Coord c = positions.ValeurActuelle;
 		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee(nbIterationsDansLePasse, out c) ; nbIterationsDansLePasse++) {
 			if (c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
 				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
