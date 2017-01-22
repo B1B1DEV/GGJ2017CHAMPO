@@ -74,7 +74,8 @@ abstract public class Entite : MonoBehaviour {
 			}
 		}
 
-
+		maxIntensitePos = new Coord (0, 0);
+		intensity = 0;
 		return false;	
 	}
 

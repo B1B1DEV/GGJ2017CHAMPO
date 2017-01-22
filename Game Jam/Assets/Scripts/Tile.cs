@@ -45,7 +45,7 @@ public class Tile : MonoBehaviour {
 	#endregion
 
 	#region Properties
-	public State CurrentState { get { return stateHistory.ValeurActuelle; } }//history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
+	public State CurrentState { get { return stateHistory.ValeurActuelle; } set { stateHistory.SetValeurActuelle (value); } }//history [GameManager.time % Constantes.MEMOIRE_ENTITEES]; } }
 
 	public Type type 
 	{ 
@@ -163,7 +163,7 @@ public class Tile : MonoBehaviour {
 			_meshObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 			unlitTile.enabled = false;
 
-			if (type == Type.Mur || type == Type.Mur1 || type == Type.Mur2) {
+			if (type == Type.Mur || type == Type.Mur1 || type == Type.Mur2 || type == Type.Porte || type == Type.Monstre) {
 				Vector3 thisPos = transform.position - transform.position.y * Vector3.up;
 				foreach (Firefly f in entitesInTrigger) {
 					Vector3 fPos = f.transform.position - f.transform.position.y * Vector3.up;
