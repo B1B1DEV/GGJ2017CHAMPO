@@ -12,6 +12,7 @@ public class Avatar: Entite
 		nextPulse = false;
 		Camera.main.transform.position = transform.position + new Vector3 (2, 4, 1);
 		Camera.main.transform.LookAt (transform.position);
+		GameManager.Instance.tiles [PositionActuelle.x, PositionActuelle.y].CurrentState = Tile.State.Player;
 	}
 
 	public override void Move()
