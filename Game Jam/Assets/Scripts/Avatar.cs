@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class Avatar: Entite
 {
@@ -61,8 +62,9 @@ public class Avatar: Entite
 			if (nextTile.CurrentState == Tile.State.None && nextTile.nextState == Tile.State.None)
 			{
 				GameManager.Instance.tiles [x, y].nextState = Tile.State.None;
-				PositionActuelle = new Coord(nextTile.transform.position);
-				nextTile.nextState = Tile.State.Player;
+				//PositionActuelle = new Coord(nextTile.transform.position);
+                this.transform.DOMove(nextTile.transform.position, 1f);
+                nextTile.nextState = Tile.State.Player;
 
 				// test piège
 				if (nextTile.type == Tile.Type.Piege)
@@ -73,8 +75,9 @@ public class Avatar: Entite
 				noise2.Play ();
 			}
 
-			Camera.main.transform.position = transform.position + new Vector3 (2, 4, 1);
-			Camera.main.transform.LookAt (transform.position);
+            // Recenter camera
+            //Camera.main.transform.position = Vector3.Lerp(transform.position + new Vector3(2, 4, 1), Camera.main.transform.position, 0.99f);
+            //Camera.main.transform.LookAt (transform.position);
 		}
 
 		// on remet à zéro
