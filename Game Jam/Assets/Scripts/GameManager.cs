@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour{
 
 	public event Firefly.DestroyFireflyAction DestroyFireflyEvent = null;
 
-	public enum Status {Normal, Paused, GameOver, Victory};
-	public Status status;
+	enum Status {Normal, Paused, GameOver, Victory};
+	Status status;
 
 	void Awake()
 	{
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour{
 
     void FourSecondsUpdateLoop()
     {
-        Debug.Log("Moving entities acknowledge update now");
+//        Debug.Log("Moving entities acknowledge update now");
         //Fireflies get one step older
         foreach (Firefly f in fireflies)
         {
@@ -106,6 +106,23 @@ public class GameManager : MonoBehaviour{
         time++;
 
 		OnUpdateHistoire.Invoke ();
-
     }
+
+	public void Lose()
+	{
+		status = Status.GameOver;
+		Time.timeScale = 0f;
+	}
+
+	void OnGUI()
+	{
+		if (status == Status.GameOver)
+		{
+			GUIStyle style = new GUIStyle();
+			style.fontSize = 60;
+			style.normal.textColor = Color.white;
+			style.alignment = TextAnchor.MiddleCenter;
+			GUI.Label (new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Over!", style);
+		}
+	}
 }

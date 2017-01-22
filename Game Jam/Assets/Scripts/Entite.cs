@@ -43,7 +43,7 @@ abstract public class Entite : MonoBehaviour {
 				RaycastHit hit;
 
 				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"),QueryTriggerInteraction.Collide)) {
-					intensities.Add (c, 1f);
+					intensities.Add (c, GameManager.Instance.tiles[c.x,c.y].lightingHistory.ValeurActuelle);
 					ret = true;
 				}
 			}
@@ -68,7 +68,7 @@ abstract public class Entite : MonoBehaviour {
 
 				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"),QueryTriggerInteraction.Collide)) {
 					maxIntensitePos = c;
-					intensity = 1f;
+					intensity = GameManager.Instance.tiles[c.x,c.y].lightingHistory.ValeurActuelle;
 					return true;
 				}
 			}
