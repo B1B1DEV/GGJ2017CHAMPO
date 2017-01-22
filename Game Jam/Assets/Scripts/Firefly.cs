@@ -25,7 +25,7 @@ public class Firefly : Entite
     public override void Move()
     {
         //Move to the next tile
-        Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, 0, transform.position.z + velocity.z);
+        Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, transform.position.y, transform.position.z + velocity.z);
         float timeAnim = 12f;
         this.transform.DOMove(posNextTile, timeAnim);
         

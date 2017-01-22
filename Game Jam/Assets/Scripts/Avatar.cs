@@ -21,9 +21,9 @@ public class Avatar: Entite
 
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			//GameManager.Instance.pulse.
-			GameManager.Instance.pulse.sourcePoint = transform.position;
-			GameManager.Instance.pulse.Fireflash ();
+            //GameManager.Instance.pulse.
+            GameManager.Instance.pulse.sourcePoint = transform.position + 0.5f*Vector3.up;
+            GameManager.Instance.pulse.Fireflash ();
 		}
 			
 		Camera.main.transform.position = transform.position + new Vector3(2,4,1);
