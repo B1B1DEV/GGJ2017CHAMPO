@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour{
 		foreach (Monstre m in monstres) {
 			m.VisibilityFrom (avatarPos, out seenMonsters);
 			foreach (KeyValuePair<Coord, float> pair in seenMonsters) {
-				tiles [pair.Key.x, pair.Key.y].type = Tile.Type.Monstre;
+				tiles [pair.Key.y, pair.Key.x].type = Tile.Type.Monstre;
 			}
 		}
 

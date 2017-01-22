@@ -29,6 +29,9 @@ abstract public class Entite : MonoBehaviour {
 	
 	public bool VisibilityFrom ( Coord fromPos, out Dictionary<Coord, float> intensities )
 	{
+
+		bool ret = false;
+
 		intensities = new Dictionary<Coord, float> ();
 
 		Coord c;
@@ -41,6 +44,32 @@ abstract public class Entite : MonoBehaviour {
 
 				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"),QueryTriggerInteraction.Collide)) {
 					intensities.Add (c, 1f);
+					ret = true;
+				}
+			}
+		}
+
+
+		return ret;	
+	}
+
+	
+
+	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
+	{
+
+		Coord c;
+		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee (nbIterationsDansLePasse, out c); nbIterationsDansLePasse++) {
+			if (GameManager.Instance.tiles[c.x,c.y].lit && c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
+				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
+				Vector3 arrivee = c.ToVector3 () + Vector3.up;
+				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
+				RaycastHit hit;
+
+				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"),QueryTriggerInteraction.Collide)) {
+					maxIntensitePos = c;
+					intensity = 1f;
+					return true;
 				}
 			}
 		}
@@ -49,46 +78,6 @@ abstract public class Entite : MonoBehaviour {
 		return false;	
 	}
 
-	
-
-	public bool VisibilityFrom ( Coord fromPos, out Coord maxIntensitePos, out float intensity )
-	{
-		List<float> intensities = new List<float> ();
-		List<Coord> coords = new List<Coord> ();
-
-		//float maxIntensity = Mathf.NegativeInfinity;
-
-		Coord c = positions.ValeurActuelle;
-		for (int nbIterationsDansLePasse = 0; positions.ValeurPassee(nbIterationsDansLePasse, out c) ; nbIterationsDansLePasse++) {
-			if (c.DistanceTo (fromPos) == nbIterationsDansLePasse) {
-				Vector3 depart = fromPos.ToVector3 () + Vector3.up;
-				Vector3 arrivee = c.ToVector3 () + Vector3.up;
-				Ray ray = new Ray (depart, arrivee - depart); // + Vector3.up est la pour raycast 1m au dessus du sol. 
-				RaycastHit hit;
-
-				if (!Physics.Raycast (ray, out hit, Vector3.Distance (depart, arrivee), LayerMask.GetMask ("Environnement"))) 
-				{
-					intensities.Add (Random.value);
-					coords.Add (c);
-				}
-			}
-		}
-	
-
-		if (intensities.Count != 0) {
-			float maxIntensity = intensities.Max ();
-			intensity = maxIntensity;
-			int indexMax = intensities.FindIndex (e => e == maxIntensity);
-			maxIntensitePos = coords [indexMax];
-			
-			return true;
-		} else {
-			intensity = 0;
-			maxIntensitePos = new Coord (0, 0);
-
-			return false;
-		}
-	}
 	
 
 }

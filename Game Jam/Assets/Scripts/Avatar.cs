@@ -25,9 +25,9 @@ public class Avatar: Entite
 			GameManager.Instance.pulse.sourcePoint = transform.position;
 			GameManager.Instance.pulse.Fireflash ();
 		}
-
+			
+		Camera.main.transform.position = transform.position + new Vector3(2,4,1);
 		Camera.main.transform.LookAt (transform.position);
-		Camera.main.transform.position = transform.position-4f * Camera.main.transform.forward;
 	}
 
 
