@@ -62,7 +62,7 @@ public class Monstre : Entite {
 			}
 		}
 		// déclin de l'intensité dans la mémoire du monstre
-		intensity -= Constantes.INTENSITY_DECAY;
+		intensity -= Constantes.INTENSITY_DECAY/2;
 		if (bestIntensity < 0)
 		{
 			bestIntensity = 0f;

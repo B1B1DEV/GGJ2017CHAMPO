@@ -8,6 +8,8 @@ public class Firefly : Entite
     private GameManager gm;
     public int age;
 
+	public delegate void DestroyFireflyAction();
+
 	protected override void Start()
     {
 		base.Start ();
@@ -25,8 +27,8 @@ public class Firefly : Entite
     public override void Move()
     {
         //Move to the next tile
-        Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, 0, transform.position.z + velocity.z);
-        float timeAnim = 12f;
+        Vector3 posNextTile = new Vector3(transform.position.x + velocity.x, transform.position.y, transform.position.z + velocity.z);
+        float timeAnim = 6f;
         this.transform.DOMove(posNextTile, timeAnim);
         
         //Wane
@@ -43,8 +45,11 @@ public class Firefly : Entite
         // Destroy if zero
         if (intensity <= 0f)
         {
-            Destroy(gameObject);
-            gm.fireflies.Remove(this);
+			GameManager.Instance.DestroyFireflyEvent += delegate {
+				Destroy(gameObject);
+				gm.fireflies.Remove(this);	
+				positions.Terminer();
+			};
         }
 
     }
