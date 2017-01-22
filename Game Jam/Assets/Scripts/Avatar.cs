@@ -1,9 +1,15 @@
 using UnityEngine;
+using System.Collections;
 
 public class Avatar: Entite
 {
 	private Tile nextTile;
 	private bool nextPulse;
+
+	//Sound
+	public AudioSource[] sounds;
+	public AudioSource noise1;
+	public AudioSource noise2;
 
 	void Start()
 	{
@@ -12,7 +18,10 @@ public class Avatar: Entite
 		nextPulse = false;
 		Camera.main.transform.position = transform.position + new Vector3 (2, 4, 1);
 		Camera.main.transform.LookAt (transform.position);
-		GameManager.Instance.tiles [PositionActuelle.x, PositionActuelle.y].CurrentState = Tile.State.Player;
+
+		sounds = GetComponents<AudioSource> ();
+		noise1 = sounds [0];
+		noise2 = sounds [1];
 	}
 
 	public override void Move()
@@ -44,6 +53,9 @@ public class Avatar: Entite
 			//GameManager.Instance.pulse.
 			GameManager.Instance.pulse.sourcePoint = transform.position + 0.5f*Vector3.up;
 			GameManager.Instance.pulse.Fireflash ();
+			//Sound
+			//source.PlayOneShot(source.clip, 1.0f);
+			noise1.Play();
 		} else if (nextTile)
 		{
 			if (nextTile.CurrentState == Tile.State.None && nextTile.nextState == Tile.State.None)
@@ -57,6 +69,8 @@ public class Avatar: Entite
 				{
 					GameManager.Instance.Lose();
 				}
+
+				noise2.Play ();
 			}
 
 			Camera.main.transform.position = transform.position + new Vector3 (2, 4, 1);

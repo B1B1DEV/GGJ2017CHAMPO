@@ -337,7 +337,6 @@ public class Plateau : MonoBehaviour {
 	{
 		int cpt = 0;
 
-		for (int i = 0; i < nbMaxMonstre; i++) {
 			do
 			{
 				int x=Random.Range(0, Constantes.LARGEUR_PLATEAU);
@@ -351,8 +350,7 @@ public class Plateau : MonoBehaviour {
 					Instantiate (ResourcesLoader.Load<GameObject> ("MonstreTempReel"), new Coord (x, y).ToVector3 (), Quaternion.identity, transform);
 				}
 
-			}while(cpt< nbMaxMonstre);
-		}
+		}while(cpt< nbMaxMonstre);
 	}
 
 

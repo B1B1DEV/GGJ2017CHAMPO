@@ -118,11 +118,24 @@ public class GameManager : MonoBehaviour{
 	{
 		if (status == Status.GameOver)
 		{
-			GUIStyle style = new GUIStyle();
+			GUIStyle style = new GUIStyle ();
 			style.fontSize = 60;
 			style.normal.textColor = Color.white;
 			style.alignment = TextAnchor.MiddleCenter;
 			GUI.Label (new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Over!", style);
+		} else if (status == Status.Victory)
+		{
+			GUIStyle style = new GUIStyle ();
+			style.fontSize = 60;
+			style.normal.textColor = Color.white;
+			style.alignment = TextAnchor.MiddleCenter;
+			GUI.Label (new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Victory!", style);
 		}
+	}
+
+	public void Win()
+	{
+		status = Status.Victory;
+		Time.timeScale = 0f;
 	}
 }
