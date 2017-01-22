@@ -20,7 +20,7 @@ public class Pulse : MonoBehaviour
     public void Fireflash()
     {
         // shoots 6 fireflies
-        int angle_degree = 0;
+        int angle_degree = 30;
 
         for (int i = 0; i < Constantes.N_LUCIOLES; i++)
         {
