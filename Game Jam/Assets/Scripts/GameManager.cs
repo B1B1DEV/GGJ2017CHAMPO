@@ -68,6 +68,9 @@ public class GameManager : MonoBehaviour{
 				Application.Quit ();
 				break;
 			}
+		} else if (status == Status.Paused && Input.GetKeyDown (KeyCode.X))
+		{
+			Application.Quit ();
 		}
 	}
 
@@ -139,6 +142,13 @@ public class GameManager : MonoBehaviour{
 			style.normal.textColor = Color.white;
 			style.alignment = TextAnchor.MiddleCenter;
 			GUI.Label (new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Victory!", style);
+		} else if (status == Status.Paused)
+		{
+			GUIStyle style = new GUIStyle ();
+			style.fontSize = 60;
+			style.normal.textColor = Color.white;
+			style.alignment = TextAnchor.MiddleCenter;
+			GUI.Label (new Rect (Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Type 'X' to exit", style);
 		}
 	}
 
